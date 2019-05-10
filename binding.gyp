@@ -67,7 +67,6 @@
 						],
 						"sources": 
 						[
-							"media-server/src/audio.cpp",
 							"media-server/src/audioencoder.cpp",
 							"media-server/src/audiodecoder.cpp",
 							"media-server/src/AudioPipe.cpp",
