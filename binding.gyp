@@ -69,10 +69,12 @@
 						[
 							"media-server/src/audioencoder.cpp",
 							"media-server/src/audiodecoder.cpp",
+							"media-server/src/AudioCodecFactory.cpp",
 							"media-server/src/AudioPipe.cpp",
 							"media-server/src/audiotransrater.cpp",
 							"media-server/src/MediaFrameListenerBridge.cpp",
 							"media-server/src/rtp/RTPPacket.cpp",
+							"media-server/src/rtp/RTPPayload.cpp",
 							"media-server/src/rtp/RTPHeader.cpp",
 							"media-server/src/rtp/RTPHeaderExtension.cpp",
 							"media-server/src/rtp/RTPMap.cpp",
