@@ -91,7 +91,9 @@
 							"media-server/src/opus/opusencoder.cpp",
 							"media-server/src/speex/speexcodec.cpp",
 							"media-server/src/speex/resample.c",
-							"media-server/src/nelly/NellyCodec.cpp"
+							"media-server/src/nelly/NellyCodec.cpp",
+							"media-server/src/opus/opusdepacketizer.cpp",
+							"media-server/src/rtp/RTPDepacketizer.cpp",
 						],
   					        "conditions" : [
 								['OS=="mac"', {
