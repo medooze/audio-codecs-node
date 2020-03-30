@@ -72,6 +72,7 @@
 							"media-server/src/AudioCodecFactory.cpp",
 							"media-server/src/AudioPipe.cpp",
 							"media-server/src/audiotransrater.cpp",
+							"media-server/src/EventLoop.cpp",
 							"media-server/src/MediaFrameListenerBridge.cpp",
 							"media-server/src/rtp/RTPPacket.cpp",
 							"media-server/src/rtp/RTPPayload.cpp",
