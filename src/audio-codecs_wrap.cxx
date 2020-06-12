@@ -1546,7 +1546,7 @@ fail: ;
 #define SWIGTYPE_p_MediaFrameListenerBridge swig_types[7]
 #define SWIGTYPE_p_Properties swig_types[8]
 #define SWIGTYPE_p_RTPIncomingMediaStream swig_types[9]
-#define SWIGTYPE_p_StreamTrackDepacketizer swig_types[10]
+#define SWIGTYPE_p_RTPIncomingMediaStreamDepacketizer swig_types[10]
 #define SWIGTYPE_p_char swig_types[11]
 static swig_type_info *swig_types[13];
 static swig_module_info swig_module = {swig_types, 12, 0, 0, 0, 0};
@@ -1576,6 +1576,7 @@ static swig_module_info swig_module = {swig_types, 12, 0, 0, 0, 0};
 #include "audiodecoder.h"
 #include "AudioPipe.h"	
 #include "MediaFrameListenerBridge.h"
+#include "rtp/RTPIncomingMediaStreamDepacketizer.h"
 extern "C" {
 #include "libavcodec/avcodec.h"
 }
@@ -1720,116 +1721,6 @@ public:
 		//Set it
 		return codec!=AudioCodec::UNKNOWN ? AudioEncoderWorker::SetAudioCodec(codec, properties? *properties : Properties()) : 0;
 	}
-};
-
-
-class StreamTrackDepacketizer :
-	public RTPIncomingMediaStream::Listener
-{
-public:
-	StreamTrackDepacketizer(RTPIncomingMediaStream* incomingSource)
-	{
-		//Store
-		this->incomingSource = incomingSource;
-		//Add us as RTP listeners
-		this->incomingSource->AddListener(this);
-		//No depkacketixer yet
-		depacketizer = NULL;
-	}
-
-	virtual ~StreamTrackDepacketizer()
-	{
-		//JIC
-		Stop();
-		//Check 
-		if (depacketizer)
-			//Delete depacketier
-			delete(depacketizer);
-	}
-
-	virtual void onRTP(RTPIncomingMediaStream* group,const RTPPacket::shared& packet)
-	{
-		//Do not do extra work if there are no listeners
-		if (listeners.empty()) 
-			return;
-		
-		//If depacketizer is not the same codec 
-		if (depacketizer && depacketizer->GetCodec()!=packet->GetCodec())
-		{
-			//Delete it
-			delete(depacketizer);
-			//Create it next
-			depacketizer = NULL;
-		}
-		//If we don't have a depacketized
-		if (!depacketizer)
-			//Create one
-			depacketizer = RTPDepacketizer::Create(packet->GetMedia(),packet->GetCodec());
-		//Ensure we have it
-		if (!depacketizer)
-			//Do nothing
-			return;
-		//Pass the pakcet to the depacketizer
-		 MediaFrame* frame = depacketizer->AddPacket(packet);
-		 
-		 //If we have a new frame
-		 if (frame)
-		 {
-			 //Call all listeners
-			 for (Listeners::const_iterator it = listeners.begin();it!=listeners.end();++it)
-				 //Call listener
-				 (*it)->onMediaFrame(packet->GetSSRC(),*frame);
-			 //Next
-			 depacketizer->ResetFrame();
-		 }
-		
-			
-	}
-	
-	virtual void onBye(RTPIncomingMediaStream* group) 
-	{
-		if(depacketizer)
-			//Skip current
-			depacketizer->ResetFrame();
-	}
-	
-	virtual void onEnded(RTPIncomingMediaStream* group) 
-	{
-		if (incomingSource==group)
-			incomingSource = nullptr;
-	}
-	
-	void AddMediaListener(MediaFrame::Listener *listener)
-	{
-		//Add to set
-		listeners.insert(listener);
-	}
-	
-	void RemoveMediaListener(MediaFrame::Listener *listener)
-	{
-		//Remove from set
-		listeners.erase(listener);
-	}
-	
-	void Stop()
-	{
-		//If already stopped
-		if (!incomingSource)
-			//Done
-			return;
-		
-		//Stop listeneing
-		incomingSource->RemoveListener(this);
-		//Clean it
-		incomingSource = NULL;
-	}
-	
-private:
-	typedef std::set<MediaFrame::Listener*> Listeners;
-private:
-	Listeners listeners;
-	RTPDepacketizer* depacketizer;
-	RTPIncomingMediaStream* incomingSource;
 };
 
 
@@ -1999,7 +1890,7 @@ SWIGV8_ClientData _exports_MediaFrameListenerBridge_clientData;
 SWIGV8_ClientData _exports_Properties_clientData;
 SWIGV8_ClientData _exports_AudioEncoderFacade_clientData;
 SWIGV8_ClientData _exports_AudioDecoderFacade_clientData;
-SWIGV8_ClientData _exports_StreamTrackDepacketizer_clientData;
+SWIGV8_ClientData _exports_RTPIncomingMediaStreamDepacketizer_clientData;
 
 
 static SwigV8ReturnValue _wrap_AudioCodecs_Initialize(const SwigV8Arguments &args) {
@@ -3018,26 +2909,26 @@ static void _wrap_delete_AudioDecoderFacade(v8::Persistent<v8::Value> object, vo
         }
 
 
-static SwigV8ReturnValue _wrap_new_StreamTrackDepacketizer(const SwigV8Arguments &args) {
+static SwigV8ReturnValue _wrap_new_RTPIncomingMediaStreamDepacketizer(const SwigV8Arguments &args) {
   SWIGV8_HANDLESCOPE();
   
   v8::Handle<v8::Object> self = args.Holder();
   RTPIncomingMediaStream *arg1 = (RTPIncomingMediaStream *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  StreamTrackDepacketizer *result;
-  if(args.Length() != 1) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_new_StreamTrackDepacketizer.");
+  RTPIncomingMediaStreamDepacketizer *result;
+  if(args.Length() != 1) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_new_RTPIncomingMediaStreamDepacketizer.");
   res1 = SWIG_ConvertPtr(args[0], &argp1,SWIGTYPE_p_RTPIncomingMediaStream, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_StreamTrackDepacketizer" "', argument " "1"" of type '" "RTPIncomingMediaStream *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_RTPIncomingMediaStreamDepacketizer" "', argument " "1"" of type '" "RTPIncomingMediaStream *""'"); 
   }
   arg1 = reinterpret_cast< RTPIncomingMediaStream * >(argp1);
-  result = (StreamTrackDepacketizer *)new StreamTrackDepacketizer(arg1);
+  result = (RTPIncomingMediaStreamDepacketizer *)new RTPIncomingMediaStreamDepacketizer(arg1);
   
   
   
   
-  SWIGV8_SetPrivateData(self, result, SWIGTYPE_p_StreamTrackDepacketizer, SWIG_POINTER_OWN);
+  SWIGV8_SetPrivateData(self, result, SWIGTYPE_p_RTPIncomingMediaStreamDepacketizer, SWIG_POINTER_OWN);
   SWIGV8_RETURN(self);
   
   goto fail;
@@ -3046,27 +2937,27 @@ fail:
 }
 
 
-static SwigV8ReturnValue _wrap_StreamTrackDepacketizer_AddMediaListener(const SwigV8Arguments &args) {
+static SwigV8ReturnValue _wrap_RTPIncomingMediaStreamDepacketizer_AddMediaListener(const SwigV8Arguments &args) {
   SWIGV8_HANDLESCOPE();
   
   v8::Handle<v8::Value> jsresult;
-  StreamTrackDepacketizer *arg1 = (StreamTrackDepacketizer *) 0 ;
+  RTPIncomingMediaStreamDepacketizer *arg1 = (RTPIncomingMediaStreamDepacketizer *) 0 ;
   MediaFrameListener *arg2 = (MediaFrameListener *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
   
-  if(args.Length() != 1) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_StreamTrackDepacketizer_AddMediaListener.");
+  if(args.Length() != 1) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_RTPIncomingMediaStreamDepacketizer_AddMediaListener.");
   
-  res1 = SWIG_ConvertPtr(args.Holder(), &argp1,SWIGTYPE_p_StreamTrackDepacketizer, 0 |  0 );
+  res1 = SWIG_ConvertPtr(args.Holder(), &argp1,SWIGTYPE_p_RTPIncomingMediaStreamDepacketizer, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "StreamTrackDepacketizer_AddMediaListener" "', argument " "1"" of type '" "StreamTrackDepacketizer *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RTPIncomingMediaStreamDepacketizer_AddMediaListener" "', argument " "1"" of type '" "RTPIncomingMediaStreamDepacketizer *""'"); 
   }
-  arg1 = reinterpret_cast< StreamTrackDepacketizer * >(argp1);
+  arg1 = reinterpret_cast< RTPIncomingMediaStreamDepacketizer * >(argp1);
   res2 = SWIG_ConvertPtr(args[0], &argp2,SWIGTYPE_p_MediaFrameListener, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "StreamTrackDepacketizer_AddMediaListener" "', argument " "2"" of type '" "MediaFrameListener *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RTPIncomingMediaStreamDepacketizer_AddMediaListener" "', argument " "2"" of type '" "MediaFrameListener *""'"); 
   }
   arg2 = reinterpret_cast< MediaFrameListener * >(argp2);
   (arg1)->AddMediaListener(arg2);
@@ -3082,27 +2973,27 @@ fail:
 }
 
 
-static SwigV8ReturnValue _wrap_StreamTrackDepacketizer_RemoveMediaListener(const SwigV8Arguments &args) {
+static SwigV8ReturnValue _wrap_RTPIncomingMediaStreamDepacketizer_RemoveMediaListener(const SwigV8Arguments &args) {
   SWIGV8_HANDLESCOPE();
   
   v8::Handle<v8::Value> jsresult;
-  StreamTrackDepacketizer *arg1 = (StreamTrackDepacketizer *) 0 ;
+  RTPIncomingMediaStreamDepacketizer *arg1 = (RTPIncomingMediaStreamDepacketizer *) 0 ;
   MediaFrameListener *arg2 = (MediaFrameListener *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
   
-  if(args.Length() != 1) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_StreamTrackDepacketizer_RemoveMediaListener.");
+  if(args.Length() != 1) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_RTPIncomingMediaStreamDepacketizer_RemoveMediaListener.");
   
-  res1 = SWIG_ConvertPtr(args.Holder(), &argp1,SWIGTYPE_p_StreamTrackDepacketizer, 0 |  0 );
+  res1 = SWIG_ConvertPtr(args.Holder(), &argp1,SWIGTYPE_p_RTPIncomingMediaStreamDepacketizer, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "StreamTrackDepacketizer_RemoveMediaListener" "', argument " "1"" of type '" "StreamTrackDepacketizer *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RTPIncomingMediaStreamDepacketizer_RemoveMediaListener" "', argument " "1"" of type '" "RTPIncomingMediaStreamDepacketizer *""'"); 
   }
-  arg1 = reinterpret_cast< StreamTrackDepacketizer * >(argp1);
+  arg1 = reinterpret_cast< RTPIncomingMediaStreamDepacketizer * >(argp1);
   res2 = SWIG_ConvertPtr(args[0], &argp2,SWIGTYPE_p_MediaFrameListener, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "StreamTrackDepacketizer_RemoveMediaListener" "', argument " "2"" of type '" "MediaFrameListener *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RTPIncomingMediaStreamDepacketizer_RemoveMediaListener" "', argument " "2"" of type '" "MediaFrameListener *""'"); 
   }
   arg2 = reinterpret_cast< MediaFrameListener * >(argp2);
   (arg1)->RemoveMediaListener(arg2);
@@ -3118,21 +3009,21 @@ fail:
 }
 
 
-static SwigV8ReturnValue _wrap_StreamTrackDepacketizer_Stop(const SwigV8Arguments &args) {
+static SwigV8ReturnValue _wrap_RTPIncomingMediaStreamDepacketizer_Stop(const SwigV8Arguments &args) {
   SWIGV8_HANDLESCOPE();
   
   v8::Handle<v8::Value> jsresult;
-  StreamTrackDepacketizer *arg1 = (StreamTrackDepacketizer *) 0 ;
+  RTPIncomingMediaStreamDepacketizer *arg1 = (RTPIncomingMediaStreamDepacketizer *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   
-  if(args.Length() != 0) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_StreamTrackDepacketizer_Stop.");
+  if(args.Length() != 0) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_RTPIncomingMediaStreamDepacketizer_Stop.");
   
-  res1 = SWIG_ConvertPtr(args.Holder(), &argp1,SWIGTYPE_p_StreamTrackDepacketizer, 0 |  0 );
+  res1 = SWIG_ConvertPtr(args.Holder(), &argp1,SWIGTYPE_p_RTPIncomingMediaStreamDepacketizer, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "StreamTrackDepacketizer_Stop" "', argument " "1"" of type '" "StreamTrackDepacketizer *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RTPIncomingMediaStreamDepacketizer_Stop" "', argument " "1"" of type '" "RTPIncomingMediaStreamDepacketizer *""'"); 
   }
-  arg1 = reinterpret_cast< StreamTrackDepacketizer * >(argp1);
+  arg1 = reinterpret_cast< RTPIncomingMediaStreamDepacketizer * >(argp1);
   (arg1)->Stop();
   jsresult = SWIGV8_UNDEFINED();
   
@@ -3146,24 +3037,24 @@ fail:
 
 
 #if (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031710)
-static void _wrap_delete_StreamTrackDepacketizer(v8::Persistent<v8::Value> object, void *parameter) {
+static void _wrap_delete_RTPIncomingMediaStreamDepacketizer(v8::Persistent<v8::Value> object, void *parameter) {
   SWIGV8_Proxy *proxy = static_cast<SWIGV8_Proxy *>(parameter);
 #elif (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < 0x031900)
-  static void _wrap_delete_StreamTrackDepacketizer(v8::Isolate *isolate, v8::Persistent<v8::Value> object, void *parameter) {
+  static void _wrap_delete_RTPIncomingMediaStreamDepacketizer(v8::Isolate *isolate, v8::Persistent<v8::Value> object, void *parameter) {
     SWIGV8_Proxy *proxy = static_cast<SWIGV8_Proxy *>(parameter);
 #elif (V8_MAJOR_VERSION-0) < 4 && (SWIG_V8_VERSION < SWIGV8_SETWEAK_VERSION)
-    static void _wrap_delete_StreamTrackDepacketizer(v8::Isolate *isolate, v8::Persistent< v8::Object> *object, SWIGV8_Proxy *proxy) {
+    static void _wrap_delete_RTPIncomingMediaStreamDepacketizer(v8::Isolate *isolate, v8::Persistent< v8::Object> *object, SWIGV8_Proxy *proxy) {
 #elif (V8_MAJOR_VERSION-0) < 5
-      static void _wrap_delete_StreamTrackDepacketizer(const v8::WeakCallbackData<v8::Object, SWIGV8_Proxy> &data) {
+      static void _wrap_delete_RTPIncomingMediaStreamDepacketizer(const v8::WeakCallbackData<v8::Object, SWIGV8_Proxy> &data) {
         v8::Local<v8::Object> object = data.GetValue();
         SWIGV8_Proxy *proxy = data.GetParameter();
 #else
-        static void _wrap_delete_StreamTrackDepacketizer(const v8::WeakCallbackInfo<SWIGV8_Proxy> &data) {
+        static void _wrap_delete_RTPIncomingMediaStreamDepacketizer(const v8::WeakCallbackInfo<SWIGV8_Proxy> &data) {
           SWIGV8_Proxy *proxy = data.GetParameter();
 #endif
           
           if(proxy->swigCMemOwn && proxy->swigCObject) {
-            StreamTrackDepacketizer * arg1 = (StreamTrackDepacketizer *)proxy->swigCObject;
+            RTPIncomingMediaStreamDepacketizer * arg1 = (RTPIncomingMediaStreamDepacketizer *)proxy->swigCObject;
             delete arg1;
           }
           delete proxy;
@@ -3206,7 +3097,7 @@ static swig_type_info _swigt__p_MediaFrameListener = {"_p_MediaFrameListener", "
 static swig_type_info _swigt__p_MediaFrameListenerBridge = {"_p_MediaFrameListenerBridge", "p_MediaFrameListenerBridge", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_Properties = {"_p_Properties", "Properties *|p_Properties", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RTPIncomingMediaStream = {"_p_RTPIncomingMediaStream", "p_RTPIncomingMediaStream|RTPIncomingMediaStream *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_StreamTrackDepacketizer = {"_p_StreamTrackDepacketizer", "p_StreamTrackDepacketizer|StreamTrackDepacketizer *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_RTPIncomingMediaStreamDepacketizer = {"_p_RTPIncomingMediaStreamDepacketizer", "p_RTPIncomingMediaStreamDepacketizer|RTPIncomingMediaStreamDepacketizer *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
@@ -3220,7 +3111,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_MediaFrameListenerBridge,
   &_swigt__p_Properties,
   &_swigt__p_RTPIncomingMediaStream,
-  &_swigt__p_StreamTrackDepacketizer,
+  &_swigt__p_RTPIncomingMediaStreamDepacketizer,
   &_swigt__p_char,
 };
 
@@ -3234,7 +3125,7 @@ static swig_cast_info _swigc__p_MediaFrameListener[] = {  {&_swigt__p_MediaFrame
 static swig_cast_info _swigc__p_MediaFrameListenerBridge[] = {  {&_swigt__p_MediaFrameListenerBridge, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Properties[] = {  {&_swigt__p_Properties, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RTPIncomingMediaStream[] = {  {&_swigt__p_RTPIncomingMediaStream, 0, 0, 0},  {&_swigt__p_MediaFrameListenerBridge, _p_MediaFrameListenerBridgeTo_p_RTPIncomingMediaStream, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_StreamTrackDepacketizer[] = {  {&_swigt__p_StreamTrackDepacketizer, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_RTPIncomingMediaStreamDepacketizer[] = {  {&_swigt__p_RTPIncomingMediaStreamDepacketizer, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
@@ -3248,7 +3139,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_MediaFrameListenerBridge,
   _swigc__p_Properties,
   _swigc__p_RTPIncomingMediaStream,
-  _swigc__p_StreamTrackDepacketizer,
+  _swigc__p_RTPIncomingMediaStreamDepacketizer,
   _swigc__p_char,
 };
 
@@ -3633,12 +3524,12 @@ _exports_AudioDecoderFacade_clientData.dtor = _wrap_delete_AudioDecoderFacade;
 if (SWIGTYPE_p_AudioDecoderFacade->clientdata == 0) {
   SWIGTYPE_p_AudioDecoderFacade->clientdata = &_exports_AudioDecoderFacade_clientData;
 }
-/* Name: _exports_StreamTrackDepacketizer, Type: p_StreamTrackDepacketizer, Dtor: _wrap_delete_StreamTrackDepacketizer */
-v8::Handle<v8::FunctionTemplate> _exports_StreamTrackDepacketizer_class = SWIGV8_CreateClassTemplate("_exports_StreamTrackDepacketizer");
-SWIGV8_SET_CLASS_TEMPL(_exports_StreamTrackDepacketizer_clientData.class_templ, _exports_StreamTrackDepacketizer_class);
-_exports_StreamTrackDepacketizer_clientData.dtor = _wrap_delete_StreamTrackDepacketizer;
-if (SWIGTYPE_p_StreamTrackDepacketizer->clientdata == 0) {
-  SWIGTYPE_p_StreamTrackDepacketizer->clientdata = &_exports_StreamTrackDepacketizer_clientData;
+/* Name: _exports_RTPIncomingMediaStreamDepacketizer, Type: p_RTPIncomingMediaStreamDepacketizer, Dtor: _wrap_delete_RTPIncomingMediaStreamDepacketizer */
+v8::Handle<v8::FunctionTemplate> _exports_RTPIncomingMediaStreamDepacketizer_class = SWIGV8_CreateClassTemplate("_exports_RTPIncomingMediaStreamDepacketizer");
+SWIGV8_SET_CLASS_TEMPL(_exports_RTPIncomingMediaStreamDepacketizer_clientData.class_templ, _exports_RTPIncomingMediaStreamDepacketizer_class);
+_exports_RTPIncomingMediaStreamDepacketizer_clientData.dtor = _wrap_delete_RTPIncomingMediaStreamDepacketizer;
+if (SWIGTYPE_p_RTPIncomingMediaStreamDepacketizer->clientdata == 0) {
+  SWIGTYPE_p_RTPIncomingMediaStreamDepacketizer->clientdata = &_exports_RTPIncomingMediaStreamDepacketizer_clientData;
 }
 
 
@@ -3658,9 +3549,9 @@ SWIGV8_AddMemberFunction(_exports_AudioDecoderFacade_class, "AddAudioOuput", _wr
 SWIGV8_AddMemberFunction(_exports_AudioDecoderFacade_class, "RemoveAudioOutput", _wrap_AudioDecoderFacade_RemoveAudioOutput);
 SWIGV8_AddMemberFunction(_exports_AudioDecoderFacade_class, "SetIncoming", _wrap_AudioDecoderFacade_SetIncoming);
 SWIGV8_AddMemberFunction(_exports_AudioDecoderFacade_class, "Stop", _wrap_AudioDecoderFacade_Stop);
-SWIGV8_AddMemberFunction(_exports_StreamTrackDepacketizer_class, "AddMediaListener", _wrap_StreamTrackDepacketizer_AddMediaListener);
-SWIGV8_AddMemberFunction(_exports_StreamTrackDepacketizer_class, "RemoveMediaListener", _wrap_StreamTrackDepacketizer_RemoveMediaListener);
-SWIGV8_AddMemberFunction(_exports_StreamTrackDepacketizer_class, "Stop", _wrap_StreamTrackDepacketizer_Stop);
+SWIGV8_AddMemberFunction(_exports_RTPIncomingMediaStreamDepacketizer_class, "AddMediaListener", _wrap_RTPIncomingMediaStreamDepacketizer_AddMediaListener);
+SWIGV8_AddMemberFunction(_exports_RTPIncomingMediaStreamDepacketizer_class, "RemoveMediaListener", _wrap_RTPIncomingMediaStreamDepacketizer_RemoveMediaListener);
+SWIGV8_AddMemberFunction(_exports_RTPIncomingMediaStreamDepacketizer_class, "Stop", _wrap_RTPIncomingMediaStreamDepacketizer_Stop);
 
 
   /* setup inheritances */
@@ -3767,12 +3658,12 @@ _exports_AudioDecoderFacade_class_0->SetCallHandler(_wrap_new_AudioDecoderFacade
 _exports_AudioDecoderFacade_class_0->Inherit(_exports_AudioDecoderFacade_class);
 _exports_AudioDecoderFacade_class_0->SetHiddenPrototype(true);
 v8::Handle<v8::Object> _exports_AudioDecoderFacade_obj = _exports_AudioDecoderFacade_class_0->GetFunction();
-/* Class: StreamTrackDepacketizer (_exports_StreamTrackDepacketizer) */
-v8::Handle<v8::FunctionTemplate> _exports_StreamTrackDepacketizer_class_0 = SWIGV8_CreateClassTemplate("StreamTrackDepacketizer");
-_exports_StreamTrackDepacketizer_class_0->SetCallHandler(_wrap_new_StreamTrackDepacketizer);
-_exports_StreamTrackDepacketizer_class_0->Inherit(_exports_StreamTrackDepacketizer_class);
-_exports_StreamTrackDepacketizer_class_0->SetHiddenPrototype(true);
-v8::Handle<v8::Object> _exports_StreamTrackDepacketizer_obj = _exports_StreamTrackDepacketizer_class_0->GetFunction();
+/* Class: RTPIncomingMediaStreamDepacketizer (_exports_RTPIncomingMediaStreamDepacketizer) */
+v8::Handle<v8::FunctionTemplate> _exports_RTPIncomingMediaStreamDepacketizer_class_0 = SWIGV8_CreateClassTemplate("RTPIncomingMediaStreamDepacketizer");
+_exports_RTPIncomingMediaStreamDepacketizer_class_0->SetCallHandler(_wrap_new_RTPIncomingMediaStreamDepacketizer);
+_exports_RTPIncomingMediaStreamDepacketizer_class_0->Inherit(_exports_RTPIncomingMediaStreamDepacketizer_class);
+_exports_RTPIncomingMediaStreamDepacketizer_class_0->SetHiddenPrototype(true);
+v8::Handle<v8::Object> _exports_RTPIncomingMediaStreamDepacketizer_obj = _exports_RTPIncomingMediaStreamDepacketizer_class_0->GetFunction();
 
 
   /* add static class functions and variables */
@@ -3790,7 +3681,7 @@ exports_obj->Set(SWIGV8_SYMBOL_NEW("MediaFrameListenerBridge"), _exports_MediaFr
 exports_obj->Set(SWIGV8_SYMBOL_NEW("Properties"), _exports_Properties_obj);
 exports_obj->Set(SWIGV8_SYMBOL_NEW("AudioEncoderFacade"), _exports_AudioEncoderFacade_obj);
 exports_obj->Set(SWIGV8_SYMBOL_NEW("AudioDecoderFacade"), _exports_AudioDecoderFacade_obj);
-exports_obj->Set(SWIGV8_SYMBOL_NEW("StreamTrackDepacketizer"), _exports_StreamTrackDepacketizer_obj);
+exports_obj->Set(SWIGV8_SYMBOL_NEW("RTPIncomingMediaStreamDepacketizer"), _exports_RTPIncomingMediaStreamDepacketizer_obj);
 
 
   /* create and register namespace objects */

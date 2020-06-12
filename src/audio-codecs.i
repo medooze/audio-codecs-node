@@ -5,6 +5,7 @@
 #include "audiodecoder.h"
 #include "AudioPipe.h"	
 #include "MediaFrameListenerBridge.h"
+#include "rtp/RTPIncomingMediaStreamDepacketizer.h"
 extern "C" {
 #include "libavcodec/avcodec.h"
 }
@@ -151,116 +152,6 @@ public:
 	}
 };
 
-
-class StreamTrackDepacketizer :
-	public RTPIncomingMediaStream::Listener
-{
-public:
-	StreamTrackDepacketizer(RTPIncomingMediaStream* incomingSource)
-	{
-		//Store
-		this->incomingSource = incomingSource;
-		//Add us as RTP listeners
-		this->incomingSource->AddListener(this);
-		//No depkacketixer yet
-		depacketizer = NULL;
-	}
-
-	virtual ~StreamTrackDepacketizer()
-	{
-		//JIC
-		Stop();
-		//Check 
-		if (depacketizer)
-			//Delete depacketier
-			delete(depacketizer);
-	}
-
-	virtual void onRTP(RTPIncomingMediaStream* group,const RTPPacket::shared& packet)
-	{
-		//Do not do extra work if there are no listeners
-		if (listeners.empty()) 
-			return;
-		
-		//If depacketizer is not the same codec 
-		if (depacketizer && depacketizer->GetCodec()!=packet->GetCodec())
-		{
-			//Delete it
-			delete(depacketizer);
-			//Create it next
-			depacketizer = NULL;
-		}
-		//If we don't have a depacketized
-		if (!depacketizer)
-			//Create one
-			depacketizer = RTPDepacketizer::Create(packet->GetMedia(),packet->GetCodec());
-		//Ensure we have it
-		if (!depacketizer)
-			//Do nothing
-			return;
-		//Pass the pakcet to the depacketizer
-		 MediaFrame* frame = depacketizer->AddPacket(packet);
-		 
-		 //If we have a new frame
-		 if (frame)
-		 {
-			 //Call all listeners
-			 for (Listeners::const_iterator it = listeners.begin();it!=listeners.end();++it)
-				 //Call listener
-				 (*it)->onMediaFrame(packet->GetSSRC(),*frame);
-			 //Next
-			 depacketizer->ResetFrame();
-		 }
-		
-			
-	}
-	
-	virtual void onBye(RTPIncomingMediaStream* group) 
-	{
-		if(depacketizer)
-			//Skip current
-			depacketizer->ResetFrame();
-	}
-	
-	virtual void onEnded(RTPIncomingMediaStream* group) 
-	{
-		if (incomingSource==group)
-			incomingSource = nullptr;
-	}
-	
-	void AddMediaListener(MediaFrame::Listener *listener)
-	{
-		//Add to set
-		listeners.insert(listener);
-	}
-	
-	void RemoveMediaListener(MediaFrame::Listener *listener)
-	{
-		//Remove from set
-		listeners.erase(listener);
-	}
-	
-	void Stop()
-	{
-		//If already stopped
-		if (!incomingSource)
-			//Done
-			return;
-		
-		//Stop listeneing
-		incomingSource->RemoveListener(this);
-		//Clean it
-		incomingSource = NULL;
-	}
-	
-private:
-	typedef std::set<MediaFrame::Listener*> Listeners;
-private:
-	Listeners listeners;
-	RTPDepacketizer* depacketizer;
-	RTPIncomingMediaStream* incomingSource;
-};
-
 %}
 
 %nodefaultctor AudioCodecs;
@@ -331,11 +222,10 @@ struct AudioDecoderFacade
 };
 
 
-class StreamTrackDepacketizer 
+class RTPIncomingMediaStreamDepacketizer 
 {
 public:
-	StreamTrackDepacketizer(RTPIncomingMediaStream* incomingSource);
-	//SWIG doesn't support inner classes, so specializing it here, it will be casted internally later
+	RTPIncomingMediaStreamDepacketizer(RTPIncomingMediaStream* incomingSource);
 	void AddMediaListener(MediaFrameListener* listener);
 	void RemoveMediaListener(MediaFrameListener* listener);
 	void Stop();

@@ -95,6 +95,7 @@
 							"media-server/src/nelly/NellyCodec.cpp",
 							"media-server/src/opus/opusdepacketizer.cpp",
 							"media-server/src/rtp/RTPDepacketizer.cpp",
+							"media-server/src/rtp/RTPIncomingMediaStreamDepacketizer.cpp",
 						],
   					        "conditions" : [
 								['OS=="mac"', {
