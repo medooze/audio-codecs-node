@@ -74,6 +74,7 @@
 							"media-server/src/audiotransrater.cpp",
 							"media-server/src/EventLoop.cpp",
 							"media-server/src/MediaFrameListenerBridge.cpp",
+							"media-server/src/rtp/DependencyDescriptor.cpp",
 							"media-server/src/rtp/RTPPacket.cpp",
 							"media-server/src/rtp/RTPPayload.cpp",
 							"media-server/src/rtp/RTPHeader.cpp",
