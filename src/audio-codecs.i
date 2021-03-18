@@ -92,10 +92,10 @@ public:
 			this->incoming->RemoveListener(this);
 	}
 	
-	void SetAACConfig(v8::Handle<v8::Value> config)
+	void SetAACConfig(v8::Local<v8::Value> config)
 	{
 		//Get value
-		auto utf8 = v8::String::Utf8Value(config.As<v8::String>());
+		auto utf8 = Nan::Utf8String(config);
 		
 		//Allocate memory for the binary config
 		size_t size  = utf8.length()/2;
@@ -143,10 +143,10 @@ private:
 class AudioEncoderFacade : public AudioEncoderWorker
 {
 public:
-	int SetAudioCodec(v8::Handle<v8::Value> name, const Properties *properties)
+	int SetAudioCodec(v8::Local<v8::Value> name, const Properties *properties)
 	{
 		//Get codec
-		auto codec = AudioCodec::GetCodecForName(*v8::String::Utf8Value(name.As<v8::String>()));
+		auto codec = AudioCodec::GetCodecForName(*Nan::Utf8String(name));
 		//Set it
 		return codec!=AudioCodec::UNKNOWN ? AudioEncoderWorker::SetAudioCodec(codec, properties? *properties : Properties()) : 0;
 	}
@@ -204,7 +204,7 @@ struct AudioEncoderFacade
 	int Init(AudioInput *input);
 	bool AddListener(MediaFrameListener *listener);
 	bool RemoveListener(MediaFrameListener *listener);
-	int SetAudioCodec(v8::Handle<v8::Value> name, const Properties *properties );
+	int SetAudioCodec(v8::Local<v8::Value> name, const Properties *properties );
 	int StartEncoding();
 	int StopEncoding();
 	int End();
@@ -214,7 +214,7 @@ struct AudioEncoderFacade
 struct AudioDecoderFacade
 {
 	int Start();
-	void SetAACConfig(v8::Handle<v8::Value> config);
+	void SetAACConfig(v8::Local<v8::Value> config);
 	void AddAudioOuput(AudioOutput* ouput);
 	void RemoveAudioOutput(AudioOutput* ouput);
 	bool SetIncoming(RTPIncomingMediaStream* incoming);
