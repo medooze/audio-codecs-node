@@ -92,7 +92,7 @@ public:
 			this->incoming->RemoveListener(this);
 	}
 	
-	void SetAACConfig(v8::Local<v8::Value> config)
+	void SetAACConfig(v8::Local<v8::Object> config)
 	{
 		//Get value
 		auto utf8 = Nan::Utf8String(config);
@@ -143,7 +143,7 @@ private:
 class AudioEncoderFacade : public AudioEncoderWorker
 {
 public:
-	int SetAudioCodec(v8::Local<v8::Value> name, const Properties *properties)
+	int SetAudioCodec(v8::Local<v8::Object> name, const Properties *properties)
 	{
 		//Get codec
 		auto codec = AudioCodec::GetCodecForName(*Nan::Utf8String(name));
@@ -153,6 +153,11 @@ public:
 };
 
 %}
+
+%typemap(in) v8::Local<v8::Object> {
+	$1 = v8::Local<v8::Object>::Cast($input);
+}
+
 
 %nodefaultctor AudioCodecs;
 %nodefaultdtor AudioCodecs;
@@ -204,7 +209,7 @@ struct AudioEncoderFacade
 	int Init(AudioInput *input);
 	bool AddListener(MediaFrameListener *listener);
 	bool RemoveListener(MediaFrameListener *listener);
-	int SetAudioCodec(v8::Local<v8::Value> name, const Properties *properties );
+	int SetAudioCodec(v8::Local<v8::Object> name, const Properties *properties );
 	int StartEncoding();
 	int StopEncoding();
 	int End();
@@ -214,7 +219,7 @@ struct AudioEncoderFacade
 struct AudioDecoderFacade
 {
 	int Start();
-	void SetAACConfig(v8::Local<v8::Value> config);
+	void SetAACConfig(v8::Local<v8::Object> config);
 	void AddAudioOuput(AudioOutput* ouput);
 	void RemoveAudioOutput(AudioOutput* ouput);
 	bool SetIncoming(RTPIncomingMediaStream* incoming);

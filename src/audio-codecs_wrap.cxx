@@ -1627,7 +1627,7 @@ fail: ;
 #define SWIGTYPE_p_RTPIncomingMediaStream swig_types[9]
 #define SWIGTYPE_p_RTPIncomingMediaStreamDepacketizer swig_types[10]
 #define SWIGTYPE_p_char swig_types[11]
-#define SWIGTYPE_p_v8__LocalT_v8__Value_t swig_types[12]
+#define SWIGTYPE_p_v8__LocalT_v8__Object_t swig_types[12]
 static swig_type_info *swig_types[14];
 static swig_module_info swig_module = {swig_types, 13, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
@@ -1743,7 +1743,7 @@ public:
 			this->incoming->RemoveListener(this);
 	}
 	
-	void SetAACConfig(v8::Local<v8::Value> config)
+	void SetAACConfig(v8::Local<v8::Object> config)
 	{
 		//Get value
 		auto utf8 = Nan::Utf8String(config);
@@ -1794,7 +1794,7 @@ private:
 class AudioEncoderFacade : public AudioEncoderWorker
 {
 public:
-	int SetAudioCodec(v8::Local<v8::Value> name, const Properties *properties)
+	int SetAudioCodec(v8::Local<v8::Object> name, const Properties *properties)
 	{
 		//Get codec
 		auto codec = AudioCodec::GetCodecForName(*Nan::Utf8String(name));
@@ -2564,12 +2564,10 @@ static SwigV8ReturnValue _wrap_AudioEncoderFacade_SetAudioCodec(const SwigV8Argu
   
   SWIGV8_VALUE jsresult;
   AudioEncoderFacade *arg1 = (AudioEncoderFacade *) 0 ;
-  v8::Local< v8::Value > arg2 ;
+  v8::Local< v8::Object > arg2 ;
   Properties *arg3 = (Properties *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  void *argp2 ;
-  int res2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
   int result;
@@ -2582,15 +2580,7 @@ static SwigV8ReturnValue _wrap_AudioEncoderFacade_SetAudioCodec(const SwigV8Argu
   }
   arg1 = reinterpret_cast< AudioEncoderFacade * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(args[0], &argp2, SWIGTYPE_p_v8__LocalT_v8__Value_t,  0 );
-    if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "AudioEncoderFacade_SetAudioCodec" "', argument " "2"" of type '" "v8::Local< v8::Value >""'"); 
-    }  
-    if (!argp2) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "AudioEncoderFacade_SetAudioCodec" "', argument " "2"" of type '" "v8::Local< v8::Value >""'");
-    } else {
-      arg2 = *(reinterpret_cast< v8::Local< v8::Value > * >(argp2));
-    }
+    arg2 = v8::Local<v8::Object>::Cast(args[0]);
   }
   res3 = SWIG_ConvertPtr(args[1], &argp3,SWIGTYPE_p_Properties, 0 |  0 );
   if (!SWIG_IsOK(res3)) {
@@ -2792,11 +2782,9 @@ static SwigV8ReturnValue _wrap_AudioDecoderFacade_SetAACConfig(const SwigV8Argum
   
   SWIGV8_VALUE jsresult;
   AudioDecoderFacade *arg1 = (AudioDecoderFacade *) 0 ;
-  v8::Local< v8::Value > arg2 ;
+  v8::Local< v8::Object > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  void *argp2 ;
-  int res2 = 0 ;
   
   if(args.Length() != 1) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_AudioDecoderFacade_SetAACConfig.");
   
@@ -2806,15 +2794,7 @@ static SwigV8ReturnValue _wrap_AudioDecoderFacade_SetAACConfig(const SwigV8Argum
   }
   arg1 = reinterpret_cast< AudioDecoderFacade * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(args[0], &argp2, SWIGTYPE_p_v8__LocalT_v8__Value_t,  0 );
-    if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "AudioDecoderFacade_SetAACConfig" "', argument " "2"" of type '" "v8::Local< v8::Value >""'"); 
-    }  
-    if (!argp2) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "AudioDecoderFacade_SetAACConfig" "', argument " "2"" of type '" "v8::Local< v8::Value >""'");
-    } else {
-      arg2 = *(reinterpret_cast< v8::Local< v8::Value > * >(argp2));
-    }
+    arg2 = v8::Local<v8::Object>::Cast(args[0]);
   }
   (arg1)->SetAACConfig(arg2);
   jsresult = SWIGV8_UNDEFINED();
@@ -3213,7 +3193,7 @@ static swig_type_info _swigt__p_Properties = {"_p_Properties", "Properties *|p_P
 static swig_type_info _swigt__p_RTPIncomingMediaStream = {"_p_RTPIncomingMediaStream", "p_RTPIncomingMediaStream|RTPIncomingMediaStream *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RTPIncomingMediaStreamDepacketizer = {"_p_RTPIncomingMediaStreamDepacketizer", "p_RTPIncomingMediaStreamDepacketizer|RTPIncomingMediaStreamDepacketizer *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_v8__LocalT_v8__Value_t = {"_p_v8__LocalT_v8__Value_t", "v8::Local< v8::Value > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_v8__LocalT_v8__Object_t = {"_p_v8__LocalT_v8__Object_t", "v8::Local< v8::Object > *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
   &_swigt__p_AudioCodecs,
@@ -3228,7 +3208,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_RTPIncomingMediaStream,
   &_swigt__p_RTPIncomingMediaStreamDepacketizer,
   &_swigt__p_char,
-  &_swigt__p_v8__LocalT_v8__Value_t,
+  &_swigt__p_v8__LocalT_v8__Object_t,
 };
 
 static swig_cast_info _swigc__p_AudioCodecs[] = {  {&_swigt__p_AudioCodecs, 0, 0, 0},{0, 0, 0, 0}};
@@ -3243,7 +3223,7 @@ static swig_cast_info _swigc__p_Properties[] = {  {&_swigt__p_Properties, 0, 0, 
 static swig_cast_info _swigc__p_RTPIncomingMediaStream[] = {  {&_swigt__p_RTPIncomingMediaStream, 0, 0, 0},  {&_swigt__p_MediaFrameListenerBridge, _p_MediaFrameListenerBridgeTo_p_RTPIncomingMediaStream, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RTPIncomingMediaStreamDepacketizer[] = {  {&_swigt__p_RTPIncomingMediaStreamDepacketizer, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_v8__LocalT_v8__Value_t[] = {  {&_swigt__p_v8__LocalT_v8__Value_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_v8__LocalT_v8__Object_t[] = {  {&_swigt__p_v8__LocalT_v8__Object_t, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_AudioCodecs,
@@ -3258,7 +3238,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_RTPIncomingMediaStream,
   _swigc__p_RTPIncomingMediaStreamDepacketizer,
   _swigc__p_char,
-  _swigc__p_v8__LocalT_v8__Value_t,
+  _swigc__p_v8__LocalT_v8__Object_t,
 };
 
 
