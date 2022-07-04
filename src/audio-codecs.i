@@ -172,7 +172,11 @@ struct MediaFrameListener {};
 
 %nodefaultctor RTPIncomingMediaStream;
 %nodefaultdtor RTPIncomingMediaStream;
-struct RTPIncomingMediaStream {};
+struct RTPIncomingMediaStream 
+{
+	DWORD GetMediaSSRC();
+	TimeService& GetTimeService();
+};
 
 %nodefaultctor AudioInput;
 %nodefaultdtor AudioInput;
