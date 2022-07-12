@@ -152,6 +152,12 @@ public:
 	}
 };
 
+//SWIG only supports single class inheritance
+MediaFrameListener* MediaFrameListenerBridgeToMediaFrameListener(MediaFrameListenerBridge* bridge)
+{
+	return (MediaFrameListener*)bridge;
+}
+
 %}
 
 %typemap(in) v8::Local<v8::Object> {
@@ -170,12 +176,24 @@ struct AudioCodecs
 %nodefaultdtor MediaFrameListener;
 struct MediaFrameListener {};
 
+%{
+using RTPIncomingMediaStreamListener = RTPIncomingMediaStream::Listener;
+%}
+%nodefaultctor RTPIncomingMediaStreamListener;
+struct RTPIncomingMediaStreamListener
+{
+};
+
+
 %nodefaultctor RTPIncomingMediaStream;
 %nodefaultdtor RTPIncomingMediaStream;
 struct RTPIncomingMediaStream 
 {
 	DWORD GetMediaSSRC();
 	TimeService& GetTimeService();
+
+	void AddListener(RTPIncomingMediaStreamListener* listener);
+	void RemoveListener(RTPIncomingMediaStreamListener* listener);
 };
 
 %nodefaultctor AudioInput;
@@ -193,12 +211,27 @@ struct AudioPipe :
 	AudioPipe(int rate);
 };
 
-struct MediaFrameListenerBridge : 
-	public MediaFrameListener,
-	RTPIncomingMediaStream
+%nodefaultctor MediaFrameListenerBridge;
+struct MediaFrameListenerBridge : public RTPIncomingMediaStream
 {
 	MediaFrameListenerBridge(int ssrc);
+
+	DWORD numFrames;
+	DWORD numPackets;
+	DWORD numFramesDelta;
+	DWORD numPacketsDelta;
+	DWORD totalBytes;
+	DWORD bitrate;
+	DWORD minWaitedTime;
+	DWORD maxWaitedTime;
+	DWORD avgWaitedTime;
+	void Update();
+	
+	void AddMediaListener(MediaFrameListener* listener);
+	void RemoveMediaListener(MediaFrameListener* listener);
 };
+//SWIG only supports single class inheritance
+MediaFrameListener* MediaFrameListenerBridgeToMediaFrameListener(MediaFrameListenerBridge* bridge);
 
 struct Properties
 {
