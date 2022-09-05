@@ -194,6 +194,7 @@ struct RTPIncomingMediaStream
 
 	void AddListener(RTPIncomingMediaStreamListener* listener);
 	void RemoveListener(RTPIncomingMediaStreamListener* listener);
+	void Mute(bool muting);
 };
 
 %nodefaultctor AudioInput;

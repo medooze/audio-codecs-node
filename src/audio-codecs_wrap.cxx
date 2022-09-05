@@ -1541,71 +1541,6 @@ using RTPIncomingMediaStreamListener = RTPIncomingMediaStream::Listener;
 
 
 SWIGINTERN
-int SWIG_AsVal_int (SWIGV8_VALUE valRef, int* val)
-{
-  if (!valRef->IsNumber()) {
-    return SWIG_TypeError;
-  }
-  if(val) *val = SWIGV8_INTEGER_VALUE(valRef);
-
-  return SWIG_OK;
-}
-
-
-SWIGINTERN swig_type_info*
-SWIG_pchar_descriptor(void)
-{
-  static int init = 0;
-  static swig_type_info* info = 0;
-  if (!init) {
-    info = SWIG_TypeQuery("_p_char");
-    init = 1;
-  }
-  return info;
-}
-
-
-SWIGINTERN int
-SWIG_AsCharPtrAndSize(SWIGV8_VALUE valRef, char** cptr, size_t* psize, int *alloc)
-{
-  if(valRef->IsString()) {
-    v8::Local<v8::String> js_str = v8::Local<v8::String>::Cast(valRef);
-
-    size_t len = SWIGV8_UTF8_LENGTH(js_str) + 1;
-    char* cstr = (char*) (new char[len]());
-    SWIGV8_WRITE_UTF8(js_str, cstr, len);
-    
-    if(alloc) *alloc = SWIG_NEWOBJ;
-    if(psize) *psize = len;
-    if(cptr) *cptr = cstr;
-    
-    return SWIG_OK;
-  } else {
-    if(valRef->IsObject()) {
-      SWIGV8_OBJECT obj = SWIGV8_OBJECT::Cast(valRef);
-      // try if the object is a wrapped char[]
-      swig_type_info* pchar_descriptor = SWIG_pchar_descriptor();
-      if (pchar_descriptor) {
-        void* vptr = 0;
-        if (SWIG_ConvertPtr(obj, &vptr, pchar_descriptor, 0) == SWIG_OK) {
-          if (cptr) *cptr = (char *) vptr;
-          if (psize) *psize = vptr ? (strlen((char *)vptr) + 1) : 0;
-          if (alloc) *alloc = SWIG_OLDOBJ;
-          return SWIG_OK;
-        }
-      }
-      return SWIG_TypeError;
-    } else {
-      return SWIG_TypeError;
-    }
-  }
-}
-
-
-
-
-
-SWIGINTERN
 int SWIG_AsVal_double (SWIGV8_VALUE obj, double *val)
 {
   if(!obj->IsNumber()) {
@@ -1675,6 +1610,71 @@ int SWIG_AsVal_bool (SWIGV8_VALUE obj, bool *val)
   if (val) *val = SWIGV8_BOOLEAN_VALUE(obj);
   return SWIG_OK;
 }
+
+
+SWIGINTERN
+int SWIG_AsVal_int (SWIGV8_VALUE valRef, int* val)
+{
+  if (!valRef->IsNumber()) {
+    return SWIG_TypeError;
+  }
+  if(val) *val = SWIGV8_INTEGER_VALUE(valRef);
+
+  return SWIG_OK;
+}
+
+
+SWIGINTERN swig_type_info*
+SWIG_pchar_descriptor(void)
+{
+  static int init = 0;
+  static swig_type_info* info = 0;
+  if (!init) {
+    info = SWIG_TypeQuery("_p_char");
+    init = 1;
+  }
+  return info;
+}
+
+
+SWIGINTERN int
+SWIG_AsCharPtrAndSize(SWIGV8_VALUE valRef, char** cptr, size_t* psize, int *alloc)
+{
+  if(valRef->IsString()) {
+    v8::Local<v8::String> js_str = v8::Local<v8::String>::Cast(valRef);
+
+    size_t len = SWIGV8_UTF8_LENGTH(js_str) + 1;
+    char* cstr = (char*) (new char[len]());
+    SWIGV8_WRITE_UTF8(js_str, cstr, len);
+    
+    if(alloc) *alloc = SWIG_NEWOBJ;
+    if(psize) *psize = len;
+    if(cptr) *cptr = cstr;
+    
+    return SWIG_OK;
+  } else {
+    if(valRef->IsObject()) {
+      SWIGV8_OBJECT obj = SWIGV8_OBJECT::Cast(valRef);
+      // try if the object is a wrapped char[]
+      swig_type_info* pchar_descriptor = SWIG_pchar_descriptor();
+      if (pchar_descriptor) {
+        void* vptr = 0;
+        if (SWIG_ConvertPtr(obj, &vptr, pchar_descriptor, 0) == SWIG_OK) {
+          if (cptr) *cptr = (char *) vptr;
+          if (psize) *psize = vptr ? (strlen((char *)vptr) + 1) : 0;
+          if (alloc) *alloc = SWIG_OLDOBJ;
+          return SWIG_OK;
+        }
+      }
+      return SWIG_TypeError;
+    } else {
+      return SWIG_TypeError;
+    }
+  }
+}
+
+
+
 
 
 SWIGINTERNINLINE
@@ -1881,6 +1881,42 @@ static SwigV8ReturnValue _wrap_RTPIncomingMediaStream_RemoveListener(const SwigV
   }
   arg2 = reinterpret_cast< RTPIncomingMediaStreamListener * >(argp2);
   (arg1)->RemoveListener(arg2);
+  jsresult = SWIGV8_UNDEFINED();
+  
+  
+  
+  SWIGV8_RETURN(jsresult);
+  
+  goto fail;
+fail:
+  SWIGV8_RETURN(SWIGV8_UNDEFINED());
+}
+
+
+static SwigV8ReturnValue _wrap_RTPIncomingMediaStream_Mute(const SwigV8Arguments &args) {
+  SWIGV8_HANDLESCOPE();
+  
+  SWIGV8_VALUE jsresult;
+  RTPIncomingMediaStream *arg1 = (RTPIncomingMediaStream *) 0 ;
+  bool arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool val2 ;
+  int ecode2 = 0 ;
+  
+  if(args.Length() != 1) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_RTPIncomingMediaStream_Mute.");
+  
+  res1 = SWIG_ConvertPtr(args.Holder(), &argp1,SWIGTYPE_p_RTPIncomingMediaStream, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RTPIncomingMediaStream_Mute" "', argument " "1"" of type '" "RTPIncomingMediaStream *""'"); 
+  }
+  arg1 = reinterpret_cast< RTPIncomingMediaStream * >(argp1);
+  ecode2 = SWIG_AsVal_bool(args[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RTPIncomingMediaStream_Mute" "', argument " "2"" of type '" "bool""'");
+  } 
+  arg2 = static_cast< bool >(val2);
+  (arg1)->Mute(arg2);
   jsresult = SWIGV8_UNDEFINED();
   
   
@@ -4027,6 +4063,7 @@ if (SWIGTYPE_p_RTPIncomingMediaStreamDepacketizer->clientdata == 0) {
 SWIGV8_AddMemberFunction(_exports_RTPIncomingMediaStream_class, "GetTimeService", _wrap_RTPIncomingMediaStream_GetTimeService);
 SWIGV8_AddMemberFunction(_exports_RTPIncomingMediaStream_class, "AddListener", _wrap_RTPIncomingMediaStream_AddListener);
 SWIGV8_AddMemberFunction(_exports_RTPIncomingMediaStream_class, "RemoveListener", _wrap_RTPIncomingMediaStream_RemoveListener);
+SWIGV8_AddMemberFunction(_exports_RTPIncomingMediaStream_class, "Mute", _wrap_RTPIncomingMediaStream_Mute);
 SWIGV8_AddMemberVariable(_exports_MediaFrameListenerBridge_class, "numFrames", _wrap_MediaFrameListenerBridge_numFrames_get, _wrap_MediaFrameListenerBridge_numFrames_set);
 SWIGV8_AddMemberVariable(_exports_MediaFrameListenerBridge_class, "numPackets", _wrap_MediaFrameListenerBridge_numPackets_get, _wrap_MediaFrameListenerBridge_numPackets_set);
 SWIGV8_AddMemberVariable(_exports_MediaFrameListenerBridge_class, "numFramesDelta", _wrap_MediaFrameListenerBridge_numFramesDelta_get, _wrap_MediaFrameListenerBridge_numFramesDelta_set);
