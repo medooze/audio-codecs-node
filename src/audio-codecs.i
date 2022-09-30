@@ -4,6 +4,7 @@
 #include "audioencoder.h"
 #include "audiodecoder.h"
 #include "AudioPipe.h"	
+#include "EventLoop.h"
 #include "MediaFrameListenerBridge.h"
 #include "rtp/RTPIncomingMediaStreamDepacketizer.h"
 extern "C" {
@@ -78,8 +79,6 @@ public:
 		avcodec_register_all();
 	}
 };
-	
-using MediaFrameListener =  MediaFrame::Listener;
 
 class AudioDecoderFacade : public AudioDecoderWorker
 {
@@ -87,6 +86,7 @@ public:
 	AudioDecoderFacade() = default;
 	~AudioDecoderFacade()
 	{
+		Log("-AudioDecoderFacade::~AudioDecoderFacade()() [incoming:%p,this:%p]\n",incoming,this);
 		//Remove listener from old stream
 		if (this->incoming) 
 			this->incoming->RemoveListener(this);
@@ -109,8 +109,13 @@ public:
 		//Free config
 		free(data);
 	}
+
 	bool SetIncoming(RTPIncomingMediaStream* incoming)
 	{
+		Log("-AudioDecoderFacade::SetIncoming() [incoming:%p,this:%p]\n",incoming,this);
+
+		//TODO: may be a sync issue here with onEnded
+
 		//If they are the same
 		if (this->incoming==incoming)
 			//DO nothing
@@ -135,6 +140,14 @@ public:
 		SetIncoming(nullptr);
 		return AudioDecoderWorker::Stop();
 	}
+	virtual void onEnded(RTPIncomingMediaStream* incoming)
+	{
+		Log("-AudioDecoderFacade::onEnded() [incoming:%p,this:%p]\n",incoming,this);
+		//If they are the same
+		if (this->incoming==incoming)
+			this->incoming  = nullptr;
+		AudioDecoderWorker::onEnded(incoming);
+	}
 
 private:
 	RTPIncomingMediaStream* incoming = nullptr;	
@@ -143,6 +156,11 @@ private:
 class AudioEncoderFacade : public AudioEncoderWorker
 {
 public:
+	AudioEncoderFacade()
+	{
+		loop.Start();
+	}
+
 	int SetAudioCodec(v8::Local<v8::Object> name, const Properties *properties)
 	{
 		//Get codec
@@ -150,14 +168,11 @@ public:
 		//Set it
 		return codec!=AudioCodec::UNKNOWN ? AudioEncoderWorker::SetAudioCodec(codec, properties? *properties : Properties()) : 0;
 	}
+
+	TimeService& GetTimeService() { return loop; }
+private:
+	EventLoop loop;
 };
-
-//SWIG only supports single class inheritance
-MediaFrameListener* MediaFrameListenerBridgeToMediaFrameListener(MediaFrameListenerBridge* bridge)
-{
-	return (MediaFrameListener*)bridge;
-}
-
 %}
 
 %typemap(in) v8::Local<v8::Object> {
@@ -172,9 +187,14 @@ struct AudioCodecs
 	static void Initialize();
 };
 	
+%{
+using MediaFrameListener = MediaFrame::Listener;
+%}
 %nodefaultctor MediaFrameListener;
 %nodefaultdtor MediaFrameListener;
-struct MediaFrameListener {};
+struct MediaFrameListener
+{
+};
 
 %{
 using RTPIncomingMediaStreamListener = RTPIncomingMediaStream::Listener;
@@ -213,9 +233,11 @@ struct AudioPipe :
 };
 
 %nodefaultctor MediaFrameListenerBridge;
-struct MediaFrameListenerBridge : public RTPIncomingMediaStream
+struct MediaFrameListenerBridge : 
+	public RTPIncomingMediaStream,
+	public MediaFrameListener
 {
-	MediaFrameListenerBridge(int ssrc);
+	MediaFrameListenerBridge(TimeService& timeService, int ssrc);
 
 	DWORD numFrames;
 	DWORD numPackets;
@@ -230,9 +252,16 @@ struct MediaFrameListenerBridge : public RTPIncomingMediaStream
 	
 	void AddMediaListener(MediaFrameListener* listener);
 	void RemoveMediaListener(MediaFrameListener* listener);
+	void Stop();
 };
 //SWIG only supports single class inheritance
 MediaFrameListener* MediaFrameListenerBridgeToMediaFrameListener(MediaFrameListenerBridge* bridge);
+%{
+MediaFrameListener* MediaFrameListenerBridgeToMediaFrameListener(MediaFrameListenerBridge* bridge)
+{
+	return (MediaFrameListener*)bridge;
+}
+%}
 
 struct Properties
 {
@@ -252,6 +281,8 @@ struct AudioEncoderFacade
 	int StopEncoding();
 	int End();
 	int IsEncoding();
+
+	TimeService& GetTimeService();
 };
 
 struct AudioDecoderFacade
