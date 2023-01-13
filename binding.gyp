@@ -64,6 +64,7 @@
 							"media-server/src/opus",
 							"media-server/src/speex",
 							"media-server/src/nelly",
+							"media-server/src/mp3",
 						],
 						"sources": 
 						[
@@ -89,6 +90,7 @@
 							"media-server/src/gsm/gsmcodec.cpp",
 							"media-server/src/aac/aacencoder.cpp",
 							"media-server/src/aac/aacdecoder.cpp",
+							"media-server/src/mp3/MP3Decoder.cpp",
 							"media-server/src/opus/opusdecoder.cpp",
 							"media-server/src/opus/opusencoder.cpp",
 							"media-server/src/speex/speexcodec.cpp",
