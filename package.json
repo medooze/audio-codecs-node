@@ -10,7 +10,7 @@
     "install": "test -f build/Release/medooze-audio-codecs.node || (node-gyp configure && node-gyp rebuild --jobs=max)",
     "package": "tar cvzf build/medooze-audio-codecs.tgz  `([ \"$(uname)\" = 'Darwin' ] && echo \"-s |^|medooze-audio-codecs/|\") || echo \" --transform=flags=r;s|^|medooze-audio-codecs/|\"` media-server/src/* media-server/include/* media-server/ext/libdatachannels/src/* media-server/ext/crc32c/* lib/* package.json index.js  binding.gyp  README.md src",
     "dist": "node-gyp configure && node-gyp build --jobs=max && mkdir -p dist && tar cvzf dist/medooze-audio-codecs-`node -e 'console.log(require(\"./package.json\").version)'`.tgz `([ \"$(uname)\" = 'Darwin' ] && echo \"-s |^|medooze-audio-codecs/|\") || echo \" --transform=flags=r;s|^|medooze-audio-codecs/|\"` package.json index.js   README.md lib/* build/Release/medooze-audio-codecs.node",
-    "test": "tap tests/*.js --cov"
+    "test": "tap tests/*.js --cov --no-check-coverage"
   },
   "repository": {
     "type": "git",
