@@ -15,6 +15,8 @@ jobs:
         submodules: 'recursive'
     - name: Initialize submodules
       run: git submodule update --init --recursive
+    - name: Install dependencies
+      run: sudo apt-get install -y libavcodec-dev libswresample-dev libgsm1-dev libopus-dev libspeex-dev
     - name: Install and build
       run: npm i
     - name: Run Test
