@@ -1659,9 +1659,66 @@ SWIG_AsCharPtrAndSize(SWIGV8_VALUE valRef, char** cptr, size_t* psize, int *allo
 
 
 
+
+/* Getting isfinite working pre C99 across multiple platforms is non-trivial. Users can provide SWIG_isfinite on older platforms. */
+#ifndef SWIG_isfinite
+/* isfinite() is a macro for C99 */
+# if defined(isfinite)
+#  define SWIG_isfinite(X) (isfinite(X))
+# elif defined(__cplusplus) && __cplusplus >= 201103L
+/* Use a template so that this works whether isfinite() is std::isfinite() or
+ * in the global namespace.  The reality seems to vary between compiler
+ * versions.
+ *
+ * Make sure namespace std exists to avoid compiler warnings.
+ *
+ * extern "C++" is required as this fragment can end up inside an extern "C" { } block
+ */
+namespace std { }
+extern "C++" template<typename T>
+inline int SWIG_isfinite_func(T x) {
+  using namespace std;
+  return isfinite(x);
+}
+#  define SWIG_isfinite(X) (SWIG_isfinite_func(X))
+# elif defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 2))
+#  define SWIG_isfinite(X) (__builtin_isfinite(X))
+# elif defined(_MSC_VER)
+#  define SWIG_isfinite(X) (_finite(X))
+# elif defined(__sun) && defined(__SVR4)
+#  include <ieeefp.h>
+#  define SWIG_isfinite(X) (finite(X))
+# endif
+#endif
+
+
+/* Accept infinite as a valid float value unless we are unable to check if a value is finite */
+#ifdef SWIG_isfinite
+# define SWIG_Float_Overflow_Check(X) ((X < -FLT_MAX || X > FLT_MAX) && SWIG_isfinite(X))
+#else
+# define SWIG_Float_Overflow_Check(X) ((X < -FLT_MAX || X > FLT_MAX))
+#endif
+
+
+SWIGINTERN int
+SWIG_AsVal_float (SWIGV8_VALUE obj, float *val)
+{
+  double v;
+  int res = SWIG_AsVal_double (obj, &v);
+  if (SWIG_IsOK(res)) {
+    if (SWIG_Float_Overflow_Check(v)) {
+      return SWIG_OverflowError;
+    } else {
+      if (val) *val = static_cast< float >(v);
+    }
+  }  
+  return res;
+}
+
 SWIGINTERN void Properties_SetIntegerProperty__SWIG(Properties *self,char const *key,int intval){ self->SetProperty(key,intval);	}
 SWIGINTERN void Properties_SetStringProperty__SWIG(Properties *self,char const *key,char const *val){ self->SetProperty(key,val);		}
 SWIGINTERN void Properties_SetBooleanProperty__SWIG(Properties *self,char const *key,bool boolval){ self->SetProperty(key,boolval);	}
+SWIGINTERN void Properties_SetFloatProperty__SWIG(Properties *self,char const *key,float floatval){ self->SetProperty(key,floatval);	}
 
 extern "C" {
 #include "libavcodec/avcodec.h"
@@ -1735,6 +1792,24 @@ public:
 
 		//Init avcodecs
 		avcodec_register_all();
+	}
+		
+	static void EnableLog(bool flag)
+	{
+		//Enable log
+		Logger::EnableLog(flag);
+	}
+	
+	static void EnableDebug(bool flag)
+	{
+		//Enable debug
+		Logger::EnableDebug(flag);
+	}
+	
+	static void EnableUltraDebug(bool flag)
+	{
+		//Enable debug
+		Logger::EnableUltraDebug(flag);
 	}
 };
 
@@ -3485,6 +3560,51 @@ fail:
 }
 
 
+static SwigV8ReturnValue _wrap_Properties_SetProperty__SWIG_3(const SwigV8Arguments &args, V8ErrorHandler &SWIGV8_ErrorHandler)
+{
+  SWIGV8_HANDLESCOPE();
+  
+  SWIGV8_VALUE jsresult;
+  Properties *arg1 = (Properties *) 0 ;
+  char *arg2 = (char *) 0 ;
+  float arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 ;
+  char *buf2 = 0 ;
+  int alloc2 = 0 ;
+  float val3 ;
+  int ecode3 = 0 ;
+  
+  res1 = SWIG_ConvertPtr(args.Holder(), &argp1,SWIGTYPE_p_Properties, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Properties_SetProperty" "', argument " "1"" of type '" "Properties *""'"); 
+  }
+  arg1 = reinterpret_cast< Properties * >(argp1);
+  res2 = SWIG_AsCharPtrAndSize(args[0], &buf2, NULL, &alloc2);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Properties_SetProperty" "', argument " "2"" of type '" "char const *""'");
+  }
+  arg2 = reinterpret_cast< char * >(buf2);
+  ecode3 = SWIG_AsVal_float(args[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Properties_SetProperty" "', argument " "3"" of type '" "float""'");
+  } 
+  arg3 = static_cast< float >(val3);
+  (arg1)->SetProperty((char const *)arg2,arg3);
+  jsresult = SWIGV8_UNDEFINED();
+  
+  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+  
+  
+  SWIGV8_RETURN(jsresult);
+  
+  goto fail;
+fail:
+  SWIGV8_RETURN(SWIGV8_UNDEFINED());
+}
+
+
 static SwigV8ReturnValue _wrap_Properties__wrap_Properties_SetProperty(const SwigV8Arguments &args) {
   SWIGV8_HANDLESCOPE();
   
@@ -3513,6 +3633,15 @@ static SwigV8ReturnValue _wrap_Properties__wrap_Properties_SetProperty(const Swi
   if(args.Length() == 2) {
     errorHandler.err.Clear();
     _wrap_Properties_SetProperty__SWIG_2(args, errorHandler);
+    if(errorHandler.err.IsEmpty()) {
+      return;
+    }
+  }
+  
+  
+  if(args.Length() == 2) {
+    errorHandler.err.Clear();
+    _wrap_Properties_SetProperty__SWIG_3(args, errorHandler);
     if(errorHandler.err.IsEmpty()) {
       return;
     }
@@ -3666,6 +3795,52 @@ fail:
 }
 
 
+static SwigV8ReturnValue _wrap_Properties_SetFloatProperty(const SwigV8Arguments &args) {
+  SWIGV8_HANDLESCOPE();
+  
+  SWIGV8_VALUE jsresult;
+  Properties *arg1 = (Properties *) 0 ;
+  char *arg2 = (char *) 0 ;
+  float arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 ;
+  char *buf2 = 0 ;
+  int alloc2 = 0 ;
+  float val3 ;
+  int ecode3 = 0 ;
+  
+  if(args.Length() != 2) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_Properties_SetFloatProperty.");
+  
+  res1 = SWIG_ConvertPtr(args.Holder(), &argp1,SWIGTYPE_p_Properties, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Properties_SetFloatProperty" "', argument " "1"" of type '" "Properties *""'"); 
+  }
+  arg1 = reinterpret_cast< Properties * >(argp1);
+  res2 = SWIG_AsCharPtrAndSize(args[0], &buf2, NULL, &alloc2);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Properties_SetFloatProperty" "', argument " "2"" of type '" "char const *""'");
+  }
+  arg2 = reinterpret_cast< char * >(buf2);
+  ecode3 = SWIG_AsVal_float(args[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Properties_SetFloatProperty" "', argument " "3"" of type '" "float""'");
+  } 
+  arg3 = static_cast< float >(val3);
+  Properties_SetFloatProperty__SWIG(arg1,(char const *)arg2,arg3);
+  jsresult = SWIGV8_UNDEFINED();
+  
+  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+  
+  
+  SWIGV8_RETURN(jsresult);
+  
+  goto fail;
+fail:
+  SWIGV8_RETURN(SWIGV8_UNDEFINED());
+}
+
+
 static SwigV8ReturnValue _wrap_new_Properties(const SwigV8Arguments &args) {
   SWIGV8_HANDLESCOPE();
   
@@ -3706,6 +3881,87 @@ static SwigV8ReturnValue _wrap_AudioCodecs_Initialize(const SwigV8Arguments &arg
   
   AudioCodecs::Initialize();
   jsresult = SWIGV8_UNDEFINED();
+  
+  SWIGV8_RETURN(jsresult);
+  
+  goto fail;
+fail:
+  SWIGV8_RETURN(SWIGV8_UNDEFINED());
+}
+
+
+static SwigV8ReturnValue _wrap_AudioCodecs_EnableLog(const SwigV8Arguments &args) {
+  SWIGV8_HANDLESCOPE();
+  
+  SWIGV8_VALUE jsresult;
+  bool arg1 ;
+  bool val1 ;
+  int ecode1 = 0 ;
+  
+  if(args.Length() != 1) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_AudioCodecs_EnableLog.");
+  
+  ecode1 = SWIG_AsVal_bool(args[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "AudioCodecs_EnableLog" "', argument " "1"" of type '" "bool""'");
+  } 
+  arg1 = static_cast< bool >(val1);
+  AudioCodecs::EnableLog(arg1);
+  jsresult = SWIGV8_UNDEFINED();
+  
+  
+  SWIGV8_RETURN(jsresult);
+  
+  goto fail;
+fail:
+  SWIGV8_RETURN(SWIGV8_UNDEFINED());
+}
+
+
+static SwigV8ReturnValue _wrap_AudioCodecs_EnableDebug(const SwigV8Arguments &args) {
+  SWIGV8_HANDLESCOPE();
+  
+  SWIGV8_VALUE jsresult;
+  bool arg1 ;
+  bool val1 ;
+  int ecode1 = 0 ;
+  
+  if(args.Length() != 1) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_AudioCodecs_EnableDebug.");
+  
+  ecode1 = SWIG_AsVal_bool(args[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "AudioCodecs_EnableDebug" "', argument " "1"" of type '" "bool""'");
+  } 
+  arg1 = static_cast< bool >(val1);
+  AudioCodecs::EnableDebug(arg1);
+  jsresult = SWIGV8_UNDEFINED();
+  
+  
+  SWIGV8_RETURN(jsresult);
+  
+  goto fail;
+fail:
+  SWIGV8_RETURN(SWIGV8_UNDEFINED());
+}
+
+
+static SwigV8ReturnValue _wrap_AudioCodecs_EnableUltraDebug(const SwigV8Arguments &args) {
+  SWIGV8_HANDLESCOPE();
+  
+  SWIGV8_VALUE jsresult;
+  bool arg1 ;
+  bool val1 ;
+  int ecode1 = 0 ;
+  
+  if(args.Length() != 1) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_AudioCodecs_EnableUltraDebug.");
+  
+  ecode1 = SWIG_AsVal_bool(args[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "AudioCodecs_EnableUltraDebug" "', argument " "1"" of type '" "bool""'");
+  } 
+  arg1 = static_cast< bool >(val1);
+  AudioCodecs::EnableUltraDebug(arg1);
+  jsresult = SWIGV8_UNDEFINED();
+  
   
   SWIGV8_RETURN(jsresult);
   
@@ -4921,6 +5177,7 @@ SWIGV8_AddMemberFunction(_exports_Properties_class, "SetProperty", _wrap_Propert
 SWIGV8_AddMemberFunction(_exports_Properties_class, "SetIntegerProperty", _wrap_Properties_SetIntegerProperty);
 SWIGV8_AddMemberFunction(_exports_Properties_class, "SetStringProperty", _wrap_Properties_SetStringProperty);
 SWIGV8_AddMemberFunction(_exports_Properties_class, "SetBooleanProperty", _wrap_Properties_SetBooleanProperty);
+SWIGV8_AddMemberFunction(_exports_Properties_class, "SetFloatProperty", _wrap_Properties_SetFloatProperty);
 SWIGV8_AddMemberFunction(_exports_AudioDecoderFacade_class, "Start", _wrap_AudioDecoderFacade_Start);
 SWIGV8_AddMemberFunction(_exports_AudioDecoderFacade_class, "SetAACConfig", _wrap_AudioDecoderFacade_SetAACConfig);
 SWIGV8_AddMemberFunction(_exports_AudioDecoderFacade_class, "AddAudioOuput", _wrap_AudioDecoderFacade_AddAudioOuput);
@@ -5184,6 +5441,9 @@ v8::Local<v8::Object> _exports_AudioPipe_obj = _exports_AudioPipe_class_0->GetFu
 
   /* add static class functions and variables */
   SWIGV8_AddStaticFunction(_exports_AudioCodecs_obj, "Initialize", _wrap_AudioCodecs_Initialize, context);
+SWIGV8_AddStaticFunction(_exports_AudioCodecs_obj, "EnableLog", _wrap_AudioCodecs_EnableLog, context);
+SWIGV8_AddStaticFunction(_exports_AudioCodecs_obj, "EnableDebug", _wrap_AudioCodecs_EnableDebug, context);
+SWIGV8_AddStaticFunction(_exports_AudioCodecs_obj, "EnableUltraDebug", _wrap_AudioCodecs_EnableUltraDebug, context);
 
 
   /* register classes */

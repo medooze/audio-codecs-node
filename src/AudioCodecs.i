@@ -72,6 +72,24 @@ public:
 		//Init avcodecs
 		avcodec_register_all();
 	}
+		
+	static void EnableLog(bool flag)
+	{
+		//Enable log
+		Logger::EnableLog(flag);
+	}
+	
+	static void EnableDebug(bool flag)
+	{
+		//Enable debug
+		Logger::EnableDebug(flag);
+	}
+	
+	static void EnableUltraDebug(bool flag)
+	{
+		//Enable debug
+		Logger::EnableUltraDebug(flag);
+	}
 };
 
 %}
@@ -81,4 +99,7 @@ public:
 struct AudioCodecs
 {
 	static void Initialize();
+	static void EnableLog(bool flag);
+	static void EnableDebug(bool flag);
+	static void EnableUltraDebug(bool flag);
 };
