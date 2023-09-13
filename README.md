@@ -1,3 +1,5 @@
+[![audio-codecs-node-test](https://github.com/medooze/audio-codecs-node/actions/workflows/release.yaml/badge.svg)](https://github.com/medooze/audio-codecs-node/actions/workflows/release.yaml)
+
 # audio-codecs-node
 Audio codecs for Media and RTMP servers
 
