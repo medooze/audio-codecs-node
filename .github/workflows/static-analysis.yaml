@@ -2,7 +2,9 @@ name: static-analysis
 
 on:
   push:
-    branches: [ master ]
+    branches: [ hz_test_html ]
+  
+  workflow_dispatch:
   
 jobs:
   dispatch:
