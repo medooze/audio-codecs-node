@@ -18,6 +18,6 @@ jobs:
             owner: 'medooze',
             repo: 'static-analysis',
             workflow_id: 'coverity-single-repo.yml',
-            ref: 'master',
+            ref: 'test_commit_push',
             inputs: { repo: 'audio-codecs-node', private: false, commit: '${{ github.sha }}' }
           })
