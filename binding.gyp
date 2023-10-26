@@ -63,7 +63,6 @@
 							"media-server/src/aac",
 							"media-server/src/opus",
 							"media-server/src/speex",
-							"media-server/src/nelly",
 							"media-server/src/mp3",
 						],
 						"sources": 
@@ -95,7 +94,6 @@
 							"media-server/src/opus/opusencoder.cpp",
 							"media-server/src/speex/speexcodec.cpp",
 							"media-server/src/speex/resample.c",
-							"media-server/src/nelly/NellyCodec.cpp",
 							"media-server/src/opus/opusdepacketizer.cpp",
 							"media-server/src/rtp/RTPDepacketizer.cpp",
 							"media-server/src/rtp/RTPIncomingMediaStreamDepacketizer.cpp",
