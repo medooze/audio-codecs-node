@@ -49,6 +49,11 @@ public:
 		//Enable debug
 		Logger::EnableUltraDebug(flag);
 	}
+
+	static void Terminate()
+	{
+		//Do nothing for now
+	}
 };
 
 %}

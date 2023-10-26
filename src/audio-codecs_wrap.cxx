@@ -1770,6 +1770,11 @@ public:
 		//Enable debug
 		Logger::EnableUltraDebug(flag);
 	}
+
+	static void Terminate()
+	{
+		//Do nothing for now
+	}
 };
 
 
@@ -4956,6 +4961,10 @@ void SWIGV8_INIT (SWIGV8_OBJECT exports_obj, SWIGV8_VALUE /*module*/, v8::Local<
 #endif
 
   SWIG_InitializeModule(context);
+
+
+	AudioCodecs::Initialize();
+	std::atexit(AudioCodecs::Terminate);
 
 
   // a class template for creating proxies of undefined types

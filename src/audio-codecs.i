@@ -21,3 +21,7 @@
 %include "AudioOutput.i"
 %include "AudioPipe.i"
 
+%init %{
+	AudioCodecs::Initialize();
+	std::atexit(AudioCodecs::Terminate);
+%}
