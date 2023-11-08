@@ -1360,9 +1360,10 @@ fail: ;
 #define SWIGTYPE_p_RTPReceiverShared swig_types[19]
 #define SWIGTYPE_p_TimeService swig_types[20]
 #define SWIGTYPE_p_char swig_types[21]
-#define SWIGTYPE_p_v8__LocalT_v8__Object_t swig_types[22]
-static swig_type_info *swig_types[24];
-static swig_module_info swig_module = {swig_types, 23, 0, 0, 0, 0};
+#define SWIGTYPE_p_uint32_t swig_types[22]
+#define SWIGTYPE_p_v8__LocalT_v8__Object_t swig_types[23]
+static swig_type_info *swig_types[25];
+static swig_module_info swig_module = {swig_types, 24, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -3185,6 +3186,47 @@ fail:
 }
 
 
+static SwigV8ReturnValue _wrap_MediaFrameListenerBridge_SetTargetBitrateHint(const SwigV8Arguments &args) {
+  SWIGV8_HANDLESCOPE();
+  
+  SWIGV8_VALUE jsresult;
+  MediaFrameListenerBridge *arg1 = (MediaFrameListenerBridge *) 0 ;
+  uint32_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  
+  if(args.Length() != 1) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_MediaFrameListenerBridge_SetTargetBitrateHint.");
+  
+  res1 = SWIG_ConvertPtr(args.Holder(), &argp1,SWIGTYPE_p_MediaFrameListenerBridge, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MediaFrameListenerBridge_SetTargetBitrateHint" "', argument " "1"" of type '" "MediaFrameListenerBridge *""'"); 
+  }
+  arg1 = reinterpret_cast< MediaFrameListenerBridge * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(args[0], &argp2, SWIGTYPE_p_uint32_t,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MediaFrameListenerBridge_SetTargetBitrateHint" "', argument " "2"" of type '" "uint32_t""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MediaFrameListenerBridge_SetTargetBitrateHint" "', argument " "2"" of type '" "uint32_t""'");
+    } else {
+      arg2 = *(reinterpret_cast< uint32_t * >(argp2));
+    }
+  }
+  (arg1)->SetTargetBitrateHint(arg2);
+  jsresult = SWIGV8_UNDEFINED();
+  
+  
+  SWIGV8_RETURN(jsresult);
+  
+  goto fail;
+fail:
+  SWIGV8_RETURN(SWIGV8_UNDEFINED());
+}
+
+
 static void _wrap_delete_MediaFrameListenerBridge(const v8::WeakCallbackInfo<SWIGV8_Proxy> &data) {
   SWIGV8_Proxy *proxy = data.GetParameter();
   
@@ -4585,6 +4627,7 @@ static swig_type_info _swigt__p_RTPReceiver = {"_p_RTPReceiver", "RTPReceiver *|
 static swig_type_info _swigt__p_RTPReceiverShared = {"_p_RTPReceiverShared", "p_RTPReceiverShared|RTPReceiverShared *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_TimeService = {"_p_TimeService", "p_TimeService|TimeService *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_uint32_t = {"_p_uint32_t", "uint32_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_v8__LocalT_v8__Object_t = {"_p_v8__LocalT_v8__Object_t", "v8::Local< v8::Object > *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
@@ -4610,6 +4653,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_RTPReceiverShared,
   &_swigt__p_TimeService,
   &_swigt__p_char,
+  &_swigt__p_uint32_t,
   &_swigt__p_v8__LocalT_v8__Object_t,
 };
 
@@ -4635,6 +4679,7 @@ static swig_cast_info _swigc__p_RTPReceiver[] = {  {&_swigt__p_RTPReceiver, 0, 0
 static swig_cast_info _swigc__p_RTPReceiverShared[] = {  {&_swigt__p_RTPReceiverShared, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_TimeService[] = {  {&_swigt__p_EventLoop, _p_EventLoopTo_p_TimeService, 0, 0},  {&_swigt__p_TimeService, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_uint32_t[] = {  {&_swigt__p_uint32_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_v8__LocalT_v8__Object_t[] = {  {&_swigt__p_v8__LocalT_v8__Object_t, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
@@ -4660,6 +4705,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_RTPReceiverShared,
   _swigc__p_TimeService,
   _swigc__p_char,
+  _swigc__p_uint32_t,
   _swigc__p_v8__LocalT_v8__Object_t,
 };
 
@@ -5136,6 +5182,7 @@ SWIGV8_AddMemberFunction(_exports_MediaFrameListenerBridge_class, "Update", _wra
 SWIGV8_AddMemberFunction(_exports_MediaFrameListenerBridge_class, "Stop", _wrap_MediaFrameListenerBridge_Stop);
 SWIGV8_AddMemberFunction(_exports_MediaFrameListenerBridge_class, "AddMediaListener", _wrap_MediaFrameListenerBridge_AddMediaListener);
 SWIGV8_AddMemberFunction(_exports_MediaFrameListenerBridge_class, "RemoveMediaListener", _wrap_MediaFrameListenerBridge_RemoveMediaListener);
+SWIGV8_AddMemberFunction(_exports_MediaFrameListenerBridge_class, "SetTargetBitrateHint", _wrap_MediaFrameListenerBridge_SetTargetBitrateHint);
 SWIGV8_AddMemberFunction(_exports_MediaFrameListenerBridgeShared_class, "toRTPIncomingMediaStream", _wrap_MediaFrameListenerBridgeShared_toRTPIncomingMediaStream);
 SWIGV8_AddMemberFunction(_exports_MediaFrameListenerBridgeShared_class, "toRTPReceiver", _wrap_MediaFrameListenerBridgeShared_toRTPReceiver);
 SWIGV8_AddMemberFunction(_exports_MediaFrameListenerBridgeShared_class, "toMediaFrameListener", _wrap_MediaFrameListenerBridgeShared_toMediaFrameListener);
