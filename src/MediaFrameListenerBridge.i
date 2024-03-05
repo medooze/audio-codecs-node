@@ -43,6 +43,14 @@ struct MediaFrameListenerBridge :
 	void RemoveMediaListener(const MediaFrameListenerShared& listener);
 
 	void SetTargetBitrateHint(uint32_t targetBitrateHint);
+
+%extend 
+{
+	void SetMaxDelayMs(uint32_t maxDelayMs)
+	{
+		self->SetMaxDelayMs(std::chrono::milliseconds(maxDelayMs));
+	}
+}
 };
 
 SHARED_PTR_BEGIN(MediaFrameListenerBridge)
