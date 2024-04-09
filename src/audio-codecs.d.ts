@@ -139,6 +139,8 @@ export  class AudioCodecs {
 
  static Initialize(): void;
 
+ static EnableWarning(flag: boolean): void;
+
  static EnableLog(flag: boolean): void;
 
  static EnableDebug(flag: boolean): void;

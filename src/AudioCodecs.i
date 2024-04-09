@@ -32,6 +32,12 @@ public:
 		av_log_set_callback(log_ffmpeg);
 	}
 		
+	static void EnableWarning(bool flag)
+	{
+		//Enable log
+		Logger::EnableWarning(flag);
+	}
+	
 	static void EnableLog(bool flag)
 	{
 		//Enable log
@@ -63,6 +69,7 @@ public:
 struct AudioCodecs
 {
 	static void Initialize();
+	static void EnableWarning(bool flag);
 	static void EnableLog(bool flag);
 	static void EnableDebug(bool flag);
 	static void EnableUltraDebug(bool flag);

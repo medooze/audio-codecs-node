@@ -1758,6 +1758,12 @@ public:
 		av_log_set_callback(log_ffmpeg);
 	}
 		
+	static void EnableWarning(bool flag)
+	{
+		//Enable log
+		Logger::EnableWarning(flag);
+	}
+	
 	static void EnableLog(bool flag)
 	{
 		//Enable log
@@ -4429,6 +4435,33 @@ fail:
 }
 
 
+static SwigV8ReturnValue _wrap_AudioCodecs_EnableWarning(const SwigV8Arguments &args) {
+  SWIGV8_HANDLESCOPE();
+  
+  SWIGV8_VALUE jsresult;
+  bool arg1 ;
+  bool val1 ;
+  int ecode1 = 0 ;
+  
+  if(args.Length() != 1) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_AudioCodecs_EnableWarning.");
+  
+  ecode1 = SWIG_AsVal_bool(args[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "AudioCodecs_EnableWarning" "', argument " "1"" of type '" "bool""'");
+  } 
+  arg1 = static_cast< bool >(val1);
+  AudioCodecs::EnableWarning(arg1);
+  jsresult = SWIGV8_UNDEFINED();
+  
+  
+  SWIGV8_RETURN(jsresult);
+  
+  goto fail;
+fail:
+  SWIGV8_RETURN(SWIGV8_UNDEFINED());
+}
+
+
 static SwigV8ReturnValue _wrap_AudioCodecs_EnableLog(const SwigV8Arguments &args) {
   SWIGV8_HANDLESCOPE();
   
@@ -6002,6 +6035,7 @@ v8::Local<v8::Object> _exports_AudioPipe_obj = _exports_AudioPipe_class_0->GetFu
 
   /* add static class functions and variables */
   SWIGV8_AddStaticFunction(_exports_AudioCodecs_obj, "Initialize", _wrap_AudioCodecs_Initialize, context);
+SWIGV8_AddStaticFunction(_exports_AudioCodecs_obj, "EnableWarning", _wrap_AudioCodecs_EnableWarning, context);
 SWIGV8_AddStaticFunction(_exports_AudioCodecs_obj, "EnableLog", _wrap_AudioCodecs_EnableLog, context);
 SWIGV8_AddStaticFunction(_exports_AudioCodecs_obj, "EnableDebug", _wrap_AudioCodecs_EnableDebug, context);
 SWIGV8_AddStaticFunction(_exports_AudioCodecs_obj, "EnableUltraDebug", _wrap_AudioCodecs_EnableUltraDebug, context);
