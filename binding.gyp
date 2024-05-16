@@ -75,6 +75,8 @@
 							"media-server/src/EventLoop.cpp",
 							"media-server/src/log.cpp",
 							"media-server/src/MediaFrameListenerBridge.cpp",
+							"media-server/src/FrameDelayCalculator.cpp",
+							"media-server/src/FrameDispatchCoordinator.cpp",
 							"media-server/src/rtp/DependencyDescriptor.cpp",
 							"media-server/src/rtp/RTPPacket.cpp",
 							"media-server/src/rtp/RTPPayload.cpp",
