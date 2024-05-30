@@ -1,6 +1,6 @@
 {
   "name": "medooze-audio-codecs",
-  "version": "0.10.30",
+  "version": "0.10.31",
   "description": "Audio codecs for Media and RTMP servers",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,6 @@
     "swig": "swig -javascript -node -c++ src/audio-codecs.i",
     "build": "node-gyp build --jobs=max",
     "install": "test -f build/Release/medooze-audio-codecs.node || (node-gyp configure && node-gyp rebuild --jobs=max)",
-    "package": "npm run prepare && tar cvzf build/medooze-audio-codecs.tgz  `([ \"$(uname)\" = 'Darwin' ] && echo \"-s |^|medooze-audio-codecs/|\") || echo \" --transform=flags=r;s|^|medooze-audio-codecs/|\"` media-server/src/* media-server/include/* media-server/ext/libdatachannels/src/* media-server/ext/crc32c/* lib/* package.json index.js index.d.ts build/types  binding.gyp  README.md src",
     "dist": "npm run configure && npm run build && npm run prepare && mkdir -p dist && tar cvzf dist/medooze-audio-codecs-`node -e 'console.log(require(\"./package.json\").version)'`.tgz `([ \"$(uname)\" = 'Darwin' ] && echo \"-s |^|medooze-audio-codecs/|\") || echo \" --transform=flags=r;s|^|medooze-audio-codecs/|\"` package.json index.js index.d.ts build/types  README.md lib/* build/Release/medooze-audio-codecs.node",
     "test": "tap tests/*.js --cov --no-check-coverage"
   },
@@ -38,5 +37,19 @@
     "@types/node": "^20.8.6",
     "@types/uuid": "^9.0.5",
     "typescript": "^5.2.2"
-  }
+  },
+  "files": [
+    "media-server/src/*",
+    "media-server/include/*",
+    "media-server/ext/libdatachannels/src/*",
+    "media-server/ext/crc32c/*",
+    "lib/*",
+    "package.json",
+    "index.js",
+    "index.d.ts",
+    "build/types",
+    "binding.gyp",
+    "README.md",
+    "src"
+  ]
 }
