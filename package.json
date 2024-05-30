@@ -1,6 +1,6 @@
 {
   "name": "medooze-audio-codecs",
-  "version": "0.10.31",
+  "version": "0.11.0",
   "description": "Audio codecs for Media and RTMP servers",
   "main": "index.js",
   "scripts": {
@@ -31,7 +31,7 @@
     "uuid": "^3.3.2"
   },
   "peerDependencies": {
-    "medooze-media-server-src": "0.0.4"
+    "medooze-media-server-src": "^1.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.8.6",
