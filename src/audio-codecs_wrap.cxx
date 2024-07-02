@@ -1346,25 +1346,27 @@ fail: ;
 #define SWIGTYPE_p_AudioPipe swig_types[5]
 #define SWIGTYPE_p_DWORD swig_types[6]
 #define SWIGTYPE_p_EventLoop swig_types[7]
-#define SWIGTYPE_p_MediaFrameListener swig_types[8]
-#define SWIGTYPE_p_MediaFrameListenerBridge swig_types[9]
-#define SWIGTYPE_p_MediaFrameListenerBridgeShared swig_types[10]
-#define SWIGTYPE_p_MediaFrameListenerShared swig_types[11]
-#define SWIGTYPE_p_MediaFrameProducer swig_types[12]
-#define SWIGTYPE_p_MediaFrameProducerShared swig_types[13]
-#define SWIGTYPE_p_Properties swig_types[14]
-#define SWIGTYPE_p_QWORD swig_types[15]
-#define SWIGTYPE_p_RTPIncomingMediaStream swig_types[16]
-#define SWIGTYPE_p_RTPIncomingMediaStreamShared swig_types[17]
-#define SWIGTYPE_p_RTPReceiver swig_types[18]
-#define SWIGTYPE_p_RTPReceiverShared swig_types[19]
-#define SWIGTYPE_p_TimeService swig_types[20]
-#define SWIGTYPE_p_WORD swig_types[21]
-#define SWIGTYPE_p_char swig_types[22]
-#define SWIGTYPE_p_uint32_t swig_types[23]
-#define SWIGTYPE_p_v8__LocalT_v8__Object_t swig_types[24]
-static swig_type_info *swig_types[26];
-static swig_module_info swig_module = {swig_types, 25, 0, 0, 0, 0};
+#define SWIGTYPE_p_FrameDispatchCoordinator swig_types[8]
+#define SWIGTYPE_p_FrameDispatchCoordinatorShared swig_types[9]
+#define SWIGTYPE_p_MediaFrameListener swig_types[10]
+#define SWIGTYPE_p_MediaFrameListenerBridge swig_types[11]
+#define SWIGTYPE_p_MediaFrameListenerBridgeShared swig_types[12]
+#define SWIGTYPE_p_MediaFrameListenerShared swig_types[13]
+#define SWIGTYPE_p_MediaFrameProducer swig_types[14]
+#define SWIGTYPE_p_MediaFrameProducerShared swig_types[15]
+#define SWIGTYPE_p_Properties swig_types[16]
+#define SWIGTYPE_p_QWORD swig_types[17]
+#define SWIGTYPE_p_RTPIncomingMediaStream swig_types[18]
+#define SWIGTYPE_p_RTPIncomingMediaStreamShared swig_types[19]
+#define SWIGTYPE_p_RTPReceiver swig_types[20]
+#define SWIGTYPE_p_RTPReceiverShared swig_types[21]
+#define SWIGTYPE_p_TimeService swig_types[22]
+#define SWIGTYPE_p_WORD swig_types[23]
+#define SWIGTYPE_p_char swig_types[24]
+#define SWIGTYPE_p_uint32_t swig_types[25]
+#define SWIGTYPE_p_v8__LocalT_v8__Object_t swig_types[26]
+static swig_type_info *swig_types[28];
+static swig_module_info swig_module = {swig_types, 27, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -1564,6 +1566,30 @@ RTPReceiverShared* RTPReceiverShared_from_proxy(const v8::Local<v8::Value> input
 
 
 
+#include "FrameDispatchCoordinator.h"
+
+SWIGINTERN void FrameDispatchCoordinator_SetMaxDelayMs__SWIG(FrameDispatchCoordinator *self,uint32_t maxDelayMs){
+		self->SetMaxDelayMs(std::chrono::milliseconds(maxDelayMs));
+	}
+
+using FrameDispatchCoordinatorShared = std::shared_ptr<FrameDispatchCoordinator>;
+
+static FrameDispatchCoordinatorShared FrameDispatchCoordinatorShared_null_ptr = {};
+
+FrameDispatchCoordinatorShared* FrameDispatchCoordinatorShared_from_proxy(const v8::Local<v8::Value> input)
+{
+  void *ptr = nullptr;
+  if (input.IsEmpty() || !input->IsObject()) return &FrameDispatchCoordinatorShared_null_ptr;
+  v8::Local<v8::Proxy> proxy = v8::Local<v8::Proxy>::Cast(input);
+  if (proxy.IsEmpty()) return &FrameDispatchCoordinatorShared_null_ptr;
+  v8::Local<v8::Value> target = proxy->GetTarget();
+  SWIG_ConvertPtr(target, &ptr, SWIGTYPE_p_FrameDispatchCoordinatorShared,  0 );
+  if (!ptr) return &FrameDispatchCoordinatorShared_null_ptr;
+  return reinterpret_cast<FrameDispatchCoordinatorShared*>(ptr);
+}
+
+
+
 SWIGINTERN
 int SWIG_AsVal_int (SWIGV8_VALUE valRef, int* val)
 {
@@ -1575,6 +1601,14 @@ int SWIG_AsVal_int (SWIGV8_VALUE valRef, int* val)
   return SWIG_OK;
 }
 
+SWIGINTERN FrameDispatchCoordinatorShared *new_FrameDispatchCoordinatorShared__SWIG_0(int aUpdateRefsPacketLateThresholdMs,int aUpdateRefsStepPacketEarlyMs){
+		return new std::shared_ptr<FrameDispatchCoordinator>(
+			new FrameDispatchCoordinator(aUpdateRefsPacketLateThresholdMs, 
+							std::chrono::milliseconds(aUpdateRefsStepPacketEarlyMs)));
+	}
+SWIGINTERN FrameDispatchCoordinatorShared *new_FrameDispatchCoordinatorShared__SWIG_1(){
+		return new std::shared_ptr<FrameDispatchCoordinator>(new FrameDispatchCoordinator());
+	}
 SWIGINTERN void MediaFrameListenerBridge_SetMaxDelayMs__SWIG(MediaFrameListenerBridge *self,uint32_t maxDelayMs){
 		self->SetMaxDelayMs(std::chrono::milliseconds(maxDelayMs));
 	}
@@ -1913,6 +1947,8 @@ SWIGV8_ClientData _exports_RTPIncomingMediaStream_clientData;
 SWIGV8_ClientData _exports_RTPIncomingMediaStreamShared_clientData;
 SWIGV8_ClientData _exports_RTPReceiver_clientData;
 SWIGV8_ClientData _exports_RTPReceiverShared_clientData;
+SWIGV8_ClientData _exports_FrameDispatchCoordinator_clientData;
+SWIGV8_ClientData _exports_FrameDispatchCoordinatorShared_clientData;
 SWIGV8_ClientData _exports_MediaFrameListenerBridge_clientData;
 SWIGV8_ClientData _exports_MediaFrameListenerBridgeShared_clientData;
 SWIGV8_ClientData _exports_Properties_clientData;
@@ -2485,6 +2521,208 @@ static SwigV8ReturnValue _wrap_new_veto_RTPReceiverShared(const SwigV8Arguments 
   SWIG_exception(SWIG_ERROR, "Class RTPReceiverShared can not be instantiated");
 fail:
   SWIGV8_RETURN(SWIGV8_UNDEFINED());
+}
+
+
+static SwigV8ReturnValue _wrap_FrameDispatchCoordinator_SetMaxDelayMs(const SwigV8Arguments &args) {
+  SWIGV8_HANDLESCOPE();
+  
+  SWIGV8_VALUE jsresult;
+  FrameDispatchCoordinator *arg1 = (FrameDispatchCoordinator *) 0 ;
+  uint32_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  
+  if(args.Length() != 1) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_FrameDispatchCoordinator_SetMaxDelayMs.");
+  
+  res1 = SWIG_ConvertPtr(args.Holder(), &argp1,SWIGTYPE_p_FrameDispatchCoordinator, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FrameDispatchCoordinator_SetMaxDelayMs" "', argument " "1"" of type '" "FrameDispatchCoordinator *""'"); 
+  }
+  arg1 = reinterpret_cast< FrameDispatchCoordinator * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(args[0], &argp2, SWIGTYPE_p_uint32_t,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "FrameDispatchCoordinator_SetMaxDelayMs" "', argument " "2"" of type '" "uint32_t""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "FrameDispatchCoordinator_SetMaxDelayMs" "', argument " "2"" of type '" "uint32_t""'");
+    } else {
+      arg2 = *(reinterpret_cast< uint32_t * >(argp2));
+    }
+  }
+  FrameDispatchCoordinator_SetMaxDelayMs__SWIG(arg1,arg2);
+  jsresult = SWIGV8_UNDEFINED();
+  
+  
+  SWIGV8_RETURN(jsresult);
+  
+  goto fail;
+fail:
+  SWIGV8_RETURN(SWIGV8_UNDEFINED());
+}
+
+
+static SwigV8ReturnValue _wrap_new_FrameDispatchCoordinator(const SwigV8Arguments &args) {
+  SWIGV8_HANDLESCOPE();
+  
+  SWIGV8_OBJECT self = args.Holder();
+  FrameDispatchCoordinator *result;
+  if(self->InternalFieldCount() < 1) SWIG_exception_fail(SWIG_ERROR, "Illegal call of constructor _wrap_new_FrameDispatchCoordinator.");
+  if(args.Length() != 0) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_new_FrameDispatchCoordinator.");
+  result = (FrameDispatchCoordinator *)new FrameDispatchCoordinator();
+  
+  
+  
+  SWIGV8_SetPrivateData(self, result, SWIGTYPE_p_FrameDispatchCoordinator, SWIG_POINTER_OWN);
+  SWIGV8_RETURN(self);
+  
+  goto fail;
+fail:
+  SWIGV8_RETURN(SWIGV8_UNDEFINED());
+}
+
+
+static void _wrap_delete_FrameDispatchCoordinator(const v8::WeakCallbackInfo<SWIGV8_Proxy> &data) {
+  SWIGV8_Proxy *proxy = data.GetParameter();
+  
+  if(proxy->swigCMemOwn && proxy->swigCObject) {
+    FrameDispatchCoordinator * arg1 = (FrameDispatchCoordinator *)proxy->swigCObject;
+    delete arg1;
+  }
+  delete proxy;
+}
+
+
+static SwigV8ReturnValue _wrap_new_FrameDispatchCoordinatorShared__SWIG_0(const SwigV8Arguments &args, V8ErrorHandler &SWIGV8_ErrorHandler) {
+  SWIGV8_HANDLESCOPE();
+  
+  SWIGV8_OBJECT self = args.Holder();
+  int arg1 ;
+  int arg2 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  FrameDispatchCoordinatorShared *result;
+  if(self->InternalFieldCount() < 1) SWIG_exception_fail(SWIG_ERROR, "Illegal call of constructor _wrap_new_FrameDispatchCoordinatorShared__SWIG_0.");
+  if(args.Length() != 2) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_new_FrameDispatchCoordinatorShared__SWIG_0.");
+  ecode1 = SWIG_AsVal_int(args[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_FrameDispatchCoordinatorShared" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = static_cast< int >(val1);
+  ecode2 = SWIG_AsVal_int(args[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_FrameDispatchCoordinatorShared" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (FrameDispatchCoordinatorShared *)new_FrameDispatchCoordinatorShared__SWIG_0(arg1,arg2);
+  
+  
+  
+  
+  
+  SWIGV8_SetPrivateData(self, result, SWIGTYPE_p_FrameDispatchCoordinatorShared, SWIG_POINTER_OWN);
+  SWIGV8_RETURN(self);
+  
+  goto fail;
+fail:
+  SWIGV8_RETURN(SWIGV8_UNDEFINED());
+}
+
+
+static SwigV8ReturnValue _wrap_new_FrameDispatchCoordinatorShared__SWIG_1(const SwigV8Arguments &args, V8ErrorHandler &SWIGV8_ErrorHandler) {
+  SWIGV8_HANDLESCOPE();
+  
+  SWIGV8_OBJECT self = args.Holder();
+  FrameDispatchCoordinatorShared *result;
+  if(self->InternalFieldCount() < 1) SWIG_exception_fail(SWIG_ERROR, "Illegal call of constructor _wrap_new_FrameDispatchCoordinatorShared__SWIG_1.");
+  if(args.Length() != 0) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_new_FrameDispatchCoordinatorShared__SWIG_1.");
+  result = (FrameDispatchCoordinatorShared *)new_FrameDispatchCoordinatorShared__SWIG_1();
+  
+  
+  
+  SWIGV8_SetPrivateData(self, result, SWIGTYPE_p_FrameDispatchCoordinatorShared, SWIG_POINTER_OWN);
+  SWIGV8_RETURN(self);
+  
+  goto fail;
+fail:
+  SWIGV8_RETURN(SWIGV8_UNDEFINED());
+}
+
+
+static SwigV8ReturnValue _wrap_new_FrameDispatchCoordinatorShared(const SwigV8Arguments &args) {
+  SWIGV8_HANDLESCOPE();
+  
+  OverloadErrorHandler errorHandler;
+  SWIGV8_VALUE self;
+  
+  // switch all cases by means of series of if-returns.
+  
+  if(args.Length() == 2) {
+    errorHandler.err.Clear();
+    _wrap_new_FrameDispatchCoordinatorShared__SWIG_0(args, errorHandler);
+    if(errorHandler.err.IsEmpty()) {
+      return;
+    }
+  }
+  
+  if(args.Length() == 0) {
+    errorHandler.err.Clear();
+    _wrap_new_FrameDispatchCoordinatorShared__SWIG_1(args, errorHandler);
+    if(errorHandler.err.IsEmpty()) {
+      return;
+    }
+  }
+  
+  
+  // default:
+  SWIG_exception_fail(SWIG_ERROR, "Illegal arguments for construction of _exports_FrameDispatchCoordinatorShared");
+  
+fail:
+  SWIGV8_RETURN(SWIGV8_UNDEFINED());
+}
+
+
+static SwigV8ReturnValue _wrap_FrameDispatchCoordinatorShared_get(const SwigV8Arguments &args) {
+  SWIGV8_HANDLESCOPE();
+  
+  SWIGV8_VALUE jsresult;
+  FrameDispatchCoordinatorShared *arg1 = (FrameDispatchCoordinatorShared *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  FrameDispatchCoordinator *result = 0 ;
+  
+  if(args.Length() != 0) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_FrameDispatchCoordinatorShared_get.");
+  
+  res1 = SWIG_ConvertPtr(args.Holder(), &argp1,SWIGTYPE_p_FrameDispatchCoordinatorShared, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FrameDispatchCoordinatorShared_get" "', argument " "1"" of type '" "FrameDispatchCoordinatorShared *""'"); 
+  }
+  arg1 = reinterpret_cast< FrameDispatchCoordinatorShared * >(argp1);
+  result = (FrameDispatchCoordinator *)(arg1)->get();
+  jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_FrameDispatchCoordinator, 0 |  0 );
+  
+  
+  SWIGV8_RETURN(jsresult);
+  
+  goto fail;
+fail:
+  SWIGV8_RETURN(SWIGV8_UNDEFINED());
+}
+
+
+static void _wrap_delete_FrameDispatchCoordinatorShared(const v8::WeakCallbackInfo<SWIGV8_Proxy> &data) {
+  SWIGV8_Proxy *proxy = data.GetParameter();
+  
+  if(proxy->swigCMemOwn && proxy->swigCObject) {
+    FrameDispatchCoordinatorShared * arg1 = (FrameDispatchCoordinatorShared *)proxy->swigCObject;
+    delete arg1;
+  }
+  delete proxy;
 }
 
 
@@ -3715,6 +3953,38 @@ static SwigV8ReturnValue _wrap_MediaFrameListenerBridge_SetTargetBitrateHint(con
   }
   (arg1)->SetTargetBitrateHint(arg2);
   jsresult = SWIGV8_UNDEFINED();
+  
+  
+  SWIGV8_RETURN(jsresult);
+  
+  goto fail;
+fail:
+  SWIGV8_RETURN(SWIGV8_UNDEFINED());
+}
+
+
+static SwigV8ReturnValue _wrap_MediaFrameListenerBridge_SetFrameDispatchCoordinator(const SwigV8Arguments &args) {
+  SWIGV8_HANDLESCOPE();
+  
+  SWIGV8_VALUE jsresult;
+  MediaFrameListenerBridge *arg1 = (MediaFrameListenerBridge *) 0 ;
+  FrameDispatchCoordinatorShared *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  if(args.Length() != 1) SWIG_exception_fail(SWIG_ERROR, "Illegal number of arguments for _wrap_MediaFrameListenerBridge_SetFrameDispatchCoordinator.");
+  
+  res1 = SWIG_ConvertPtr(args.Holder(), &argp1,SWIGTYPE_p_MediaFrameListenerBridge, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MediaFrameListenerBridge_SetFrameDispatchCoordinator" "', argument " "1"" of type '" "MediaFrameListenerBridge *""'"); 
+  }
+  arg1 = reinterpret_cast< MediaFrameListenerBridge * >(argp1);
+  {
+    arg2 = FrameDispatchCoordinatorShared_from_proxy(args[0]);
+  }
+  (arg1)->SetFrameDispatchCoordinator((FrameDispatchCoordinatorShared const &)*arg2);
+  jsresult = SWIGV8_UNDEFINED();
+  
   
   
   SWIGV8_RETURN(jsresult);
@@ -5179,6 +5449,8 @@ static swig_type_info _swigt__p_AudioOutput = {"_p_AudioOutput", "p_AudioOutput|
 static swig_type_info _swigt__p_AudioPipe = {"_p_AudioPipe", "p_AudioPipe", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_DWORD = {"_p_DWORD", "DWORD *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_EventLoop = {"_p_EventLoop", "EventLoop *|p_EventLoop", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_FrameDispatchCoordinator = {"_p_FrameDispatchCoordinator", "p_FrameDispatchCoordinator|FrameDispatchCoordinator *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_FrameDispatchCoordinatorShared = {"_p_FrameDispatchCoordinatorShared", "p_FrameDispatchCoordinatorShared|FrameDispatchCoordinatorShared *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_MediaFrameListener = {"_p_MediaFrameListener", "p_MediaFrameListener|MediaFrameListener *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_MediaFrameListenerBridge = {"_p_MediaFrameListenerBridge", "p_MediaFrameListenerBridge|MediaFrameListenerBridge *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_MediaFrameListenerBridgeShared = {"_p_MediaFrameListenerBridgeShared", "p_MediaFrameListenerBridgeShared|MediaFrameListenerBridgeShared *", 0, 0, (void*)0, 0};
@@ -5206,6 +5478,8 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_AudioPipe,
   &_swigt__p_DWORD,
   &_swigt__p_EventLoop,
+  &_swigt__p_FrameDispatchCoordinator,
+  &_swigt__p_FrameDispatchCoordinatorShared,
   &_swigt__p_MediaFrameListener,
   &_swigt__p_MediaFrameListenerBridge,
   &_swigt__p_MediaFrameListenerBridgeShared,
@@ -5233,6 +5507,8 @@ static swig_cast_info _swigc__p_AudioOutput[] = {  {&_swigt__p_AudioPipe, _p_Aud
 static swig_cast_info _swigc__p_AudioPipe[] = {  {&_swigt__p_AudioPipe, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_DWORD[] = {  {&_swigt__p_DWORD, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_EventLoop[] = {  {&_swigt__p_EventLoop, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_FrameDispatchCoordinator[] = {  {&_swigt__p_FrameDispatchCoordinator, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_FrameDispatchCoordinatorShared[] = {  {&_swigt__p_FrameDispatchCoordinatorShared, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MediaFrameListener[] = {  {&_swigt__p_MediaFrameListener, 0, 0, 0},  {&_swigt__p_MediaFrameListenerBridge, _p_MediaFrameListenerBridgeTo_p_MediaFrameListener, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MediaFrameListenerBridge[] = {  {&_swigt__p_MediaFrameListenerBridge, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MediaFrameListenerBridgeShared[] = {  {&_swigt__p_MediaFrameListenerBridgeShared, 0, 0, 0},{0, 0, 0, 0}};
@@ -5260,6 +5536,8 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_AudioPipe,
   _swigc__p_DWORD,
   _swigc__p_EventLoop,
+  _swigc__p_FrameDispatchCoordinator,
+  _swigc__p_FrameDispatchCoordinatorShared,
   _swigc__p_MediaFrameListener,
   _swigc__p_MediaFrameListenerBridge,
   _swigc__p_MediaFrameListenerBridgeShared,
@@ -5660,6 +5938,20 @@ _exports_RTPReceiverShared_clientData.dtor = _wrap_delete_RTPReceiverShared;
 if (SWIGTYPE_p_RTPReceiverShared->clientdata == 0) {
   SWIGTYPE_p_RTPReceiverShared->clientdata = &_exports_RTPReceiverShared_clientData;
 }
+/* Name: _exports_FrameDispatchCoordinator, Type: p_FrameDispatchCoordinator, Dtor: _wrap_delete_FrameDispatchCoordinator */
+SWIGV8_FUNCTION_TEMPLATE _exports_FrameDispatchCoordinator_class = SWIGV8_CreateClassTemplate("_exports_FrameDispatchCoordinator");
+SWIGV8_SET_CLASS_TEMPL(_exports_FrameDispatchCoordinator_clientData.class_templ, _exports_FrameDispatchCoordinator_class);
+_exports_FrameDispatchCoordinator_clientData.dtor = _wrap_delete_FrameDispatchCoordinator;
+if (SWIGTYPE_p_FrameDispatchCoordinator->clientdata == 0) {
+  SWIGTYPE_p_FrameDispatchCoordinator->clientdata = &_exports_FrameDispatchCoordinator_clientData;
+}
+/* Name: _exports_FrameDispatchCoordinatorShared, Type: p_FrameDispatchCoordinatorShared, Dtor: _wrap_delete_FrameDispatchCoordinatorShared */
+SWIGV8_FUNCTION_TEMPLATE _exports_FrameDispatchCoordinatorShared_class = SWIGV8_CreateClassTemplate("_exports_FrameDispatchCoordinatorShared");
+SWIGV8_SET_CLASS_TEMPL(_exports_FrameDispatchCoordinatorShared_clientData.class_templ, _exports_FrameDispatchCoordinatorShared_class);
+_exports_FrameDispatchCoordinatorShared_clientData.dtor = _wrap_delete_FrameDispatchCoordinatorShared;
+if (SWIGTYPE_p_FrameDispatchCoordinatorShared->clientdata == 0) {
+  SWIGTYPE_p_FrameDispatchCoordinatorShared->clientdata = &_exports_FrameDispatchCoordinatorShared_clientData;
+}
 /* Name: _exports_MediaFrameListenerBridge, Type: p_MediaFrameListenerBridge, Dtor: _wrap_delete_MediaFrameListenerBridge */
 SWIGV8_FUNCTION_TEMPLATE _exports_MediaFrameListenerBridge_class = SWIGV8_CreateClassTemplate("_exports_MediaFrameListenerBridge");
 SWIGV8_SET_CLASS_TEMPL(_exports_MediaFrameListenerBridge_clientData.class_templ, _exports_MediaFrameListenerBridge_class);
@@ -5739,6 +6031,8 @@ SWIGV8_AddMemberFunction(_exports_RTPIncomingMediaStreamShared_class, "get", _wr
 SWIGV8_AddMemberFunction(_exports_RTPReceiver_class, "SendPLI", _wrap_RTPReceiver_SendPLI);
 SWIGV8_AddMemberFunction(_exports_RTPReceiver_class, "Reset", _wrap_RTPReceiver_Reset);
 SWIGV8_AddMemberFunction(_exports_RTPReceiverShared_class, "get", _wrap_RTPReceiverShared_get);
+SWIGV8_AddMemberFunction(_exports_FrameDispatchCoordinator_class, "SetMaxDelayMs", _wrap_FrameDispatchCoordinator_SetMaxDelayMs);
+SWIGV8_AddMemberFunction(_exports_FrameDispatchCoordinatorShared_class, "get", _wrap_FrameDispatchCoordinatorShared_get);
 SWIGV8_AddMemberVariable(_exports_MediaFrameListenerBridge_class, "numFrames", _wrap_MediaFrameListenerBridge_numFrames_get, _wrap_MediaFrameListenerBridge_numFrames_set);
 SWIGV8_AddMemberVariable(_exports_MediaFrameListenerBridge_class, "numPackets", _wrap_MediaFrameListenerBridge_numPackets_get, _wrap_MediaFrameListenerBridge_numPackets_set);
 SWIGV8_AddMemberVariable(_exports_MediaFrameListenerBridge_class, "numFramesDelta", _wrap_MediaFrameListenerBridge_numFramesDelta_get, _wrap_MediaFrameListenerBridge_numFramesDelta_set);
@@ -5761,6 +6055,7 @@ SWIGV8_AddMemberFunction(_exports_MediaFrameListenerBridge_class, "Stop", _wrap_
 SWIGV8_AddMemberFunction(_exports_MediaFrameListenerBridge_class, "AddMediaListener", _wrap_MediaFrameListenerBridge_AddMediaListener);
 SWIGV8_AddMemberFunction(_exports_MediaFrameListenerBridge_class, "RemoveMediaListener", _wrap_MediaFrameListenerBridge_RemoveMediaListener);
 SWIGV8_AddMemberFunction(_exports_MediaFrameListenerBridge_class, "SetTargetBitrateHint", _wrap_MediaFrameListenerBridge_SetTargetBitrateHint);
+SWIGV8_AddMemberFunction(_exports_MediaFrameListenerBridge_class, "SetFrameDispatchCoordinator", _wrap_MediaFrameListenerBridge_SetFrameDispatchCoordinator);
 SWIGV8_AddMemberFunction(_exports_MediaFrameListenerBridge_class, "SetMaxDelayMs", _wrap_MediaFrameListenerBridge_SetMaxDelayMs);
 SWIGV8_AddMemberFunction(_exports_MediaFrameListenerBridgeShared_class, "toRTPIncomingMediaStream", _wrap_MediaFrameListenerBridgeShared_toRTPIncomingMediaStream);
 SWIGV8_AddMemberFunction(_exports_MediaFrameListenerBridgeShared_class, "toRTPReceiver", _wrap_MediaFrameListenerBridgeShared_toRTPReceiver);
@@ -5941,6 +6236,26 @@ v8::Local<v8::Object> _exports_RTPReceiverShared_obj = _exports_RTPReceiverShare
 #else
 v8::Local<v8::Object> _exports_RTPReceiverShared_obj = _exports_RTPReceiverShared_class_0->GetFunction(context).ToLocalChecked();
 #endif
+/* Class: FrameDispatchCoordinator (_exports_FrameDispatchCoordinator) */
+SWIGV8_FUNCTION_TEMPLATE _exports_FrameDispatchCoordinator_class_0 = SWIGV8_CreateClassTemplate("FrameDispatchCoordinator");
+_exports_FrameDispatchCoordinator_class_0->SetCallHandler(_wrap_new_FrameDispatchCoordinator);
+_exports_FrameDispatchCoordinator_class_0->Inherit(_exports_FrameDispatchCoordinator_class);
+#if (SWIG_V8_VERSION < 0x0704)
+_exports_FrameDispatchCoordinator_class_0->SetHiddenPrototype(true);
+v8::Local<v8::Object> _exports_FrameDispatchCoordinator_obj = _exports_FrameDispatchCoordinator_class_0->GetFunction();
+#else
+v8::Local<v8::Object> _exports_FrameDispatchCoordinator_obj = _exports_FrameDispatchCoordinator_class_0->GetFunction(context).ToLocalChecked();
+#endif
+/* Class: FrameDispatchCoordinatorShared (_exports_FrameDispatchCoordinatorShared) */
+SWIGV8_FUNCTION_TEMPLATE _exports_FrameDispatchCoordinatorShared_class_0 = SWIGV8_CreateClassTemplate("FrameDispatchCoordinatorShared");
+_exports_FrameDispatchCoordinatorShared_class_0->SetCallHandler(_wrap_new_FrameDispatchCoordinatorShared);
+_exports_FrameDispatchCoordinatorShared_class_0->Inherit(_exports_FrameDispatchCoordinatorShared_class);
+#if (SWIG_V8_VERSION < 0x0704)
+_exports_FrameDispatchCoordinatorShared_class_0->SetHiddenPrototype(true);
+v8::Local<v8::Object> _exports_FrameDispatchCoordinatorShared_obj = _exports_FrameDispatchCoordinatorShared_class_0->GetFunction();
+#else
+v8::Local<v8::Object> _exports_FrameDispatchCoordinatorShared_obj = _exports_FrameDispatchCoordinatorShared_class_0->GetFunction(context).ToLocalChecked();
+#endif
 /* Class: MediaFrameListenerBridge (_exports_MediaFrameListenerBridge) */
 SWIGV8_FUNCTION_TEMPLATE _exports_MediaFrameListenerBridge_class_0 = SWIGV8_CreateClassTemplate("MediaFrameListenerBridge");
 _exports_MediaFrameListenerBridge_class_0->SetCallHandler(_wrap_new_MediaFrameListenerBridge);
@@ -6052,6 +6367,8 @@ SWIGV8_MAYBE_CHECK(exports_obj->Set(context, SWIGV8_SYMBOL_NEW("RTPIncomingMedia
 SWIGV8_MAYBE_CHECK(exports_obj->Set(context, SWIGV8_SYMBOL_NEW("RTPIncomingMediaStreamShared"), _exports_RTPIncomingMediaStreamShared_obj));
 SWIGV8_MAYBE_CHECK(exports_obj->Set(context, SWIGV8_SYMBOL_NEW("RTPReceiver"), _exports_RTPReceiver_obj));
 SWIGV8_MAYBE_CHECK(exports_obj->Set(context, SWIGV8_SYMBOL_NEW("RTPReceiverShared"), _exports_RTPReceiverShared_obj));
+SWIGV8_MAYBE_CHECK(exports_obj->Set(context, SWIGV8_SYMBOL_NEW("FrameDispatchCoordinator"), _exports_FrameDispatchCoordinator_obj));
+SWIGV8_MAYBE_CHECK(exports_obj->Set(context, SWIGV8_SYMBOL_NEW("FrameDispatchCoordinatorShared"), _exports_FrameDispatchCoordinatorShared_obj));
 SWIGV8_MAYBE_CHECK(exports_obj->Set(context, SWIGV8_SYMBOL_NEW("MediaFrameListenerBridge"), _exports_MediaFrameListenerBridge_obj));
 SWIGV8_MAYBE_CHECK(exports_obj->Set(context, SWIGV8_SYMBOL_NEW("MediaFrameListenerBridgeShared"), _exports_MediaFrameListenerBridgeShared_obj));
 SWIGV8_MAYBE_CHECK(exports_obj->Set(context, SWIGV8_SYMBOL_NEW("Properties"), _exports_Properties_obj));

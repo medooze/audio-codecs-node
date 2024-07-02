@@ -6,6 +6,7 @@
 %include "RTPIncomingMediaStream.i"
 %include "RTPReceiver.i"
 %include "MediaFrame.i"
+%include "FrameDispatchCoordinator.i"
 
 %nodefaultctor MediaFrameListenerBridge;
 struct MediaFrameListenerBridge : 
@@ -43,7 +44,8 @@ struct MediaFrameListenerBridge :
 	void RemoveMediaListener(const MediaFrameListenerShared& listener);
 
 	void SetTargetBitrateHint(uint32_t targetBitrateHint);
-
+	
+	void SetFrameDispatchCoordinator(const FrameDispatchCoordinatorShared& coordinator);
 %extend 
 {
 	void SetMaxDelayMs(uint32_t maxDelayMs)
