@@ -75,6 +75,8 @@
 							"<(medooze_media_server_src)/src/audiotransrater.cpp",
 							"<(medooze_media_server_src)/src/EventLoop.cpp",
 							"<(medooze_media_server_src)/src/log.cpp",
+							"<(medooze_media_server_src)/src/FrameDelayCalculator.cpp",
+							"<(medooze_media_server_src)/src/FrameDispatchCoordinator.cpp",
 							"<(medooze_media_server_src)/src/MediaFrameListenerBridge.cpp",
 							"<(medooze_media_server_src)/src/rtp/DependencyDescriptor.cpp",
 							"<(medooze_media_server_src)/src/rtp/RTPPacket.cpp",

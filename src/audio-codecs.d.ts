@@ -68,6 +68,18 @@ export  class RTPReceiverShared {
   get(): RTPReceiver;
 }
 
+
+export class FrameDispatchCoordinator {
+  SetMaxDelayMs(maxDelayMs: number): void;
+}
+
+export  class FrameDispatchCoordinatorShared {
+  
+  constructor();
+  
+  get(): FrameDispatchCoordinator;
+}
+
 export  class MediaFrameListenerBridge extends RTPIncomingMediaStream {
 
   constructor(timeService: TimeService | EventLoop, ssrc: number);
@@ -97,6 +109,8 @@ export  class MediaFrameListenerBridge extends RTPIncomingMediaStream {
   AddMediaListener(listener: MediaFrameListenerShared): void;
 
   RemoveMediaListener(listener: MediaFrameListenerShared): void;
+  
+  SetFrameDispatchCoordinator(coordinator: FrameDispatchCoordinatorShared): void;
 }
 
 export  class MediaFrameListenerBridgeShared {
