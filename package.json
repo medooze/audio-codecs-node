@@ -1,6 +1,6 @@
 {
   "name": "medooze-audio-codecs",
-  "version": "0.11.1",
+  "version": "0.12.0",
   "description": "Audio codecs for Media and RTMP servers",
   "main": "index.js",
   "scripts": {
