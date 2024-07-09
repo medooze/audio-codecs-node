@@ -7,7 +7,7 @@
     "prepare": "tsc --checkJs false && mkdir -p build/src && cp src/*.d.ts build/src",
     "check": "tsc --noEmit --emitDeclarationOnly false",
     "configure": "node-gyp configure",
-    "swig": "swig -javascript -node -c++ src/audio-codecs.i",
+    "swig": "swig -javascript -node -c++ -I`node -e \"require('medooze-media-server-src')\"`/include src/audio-codecs.i",
     "build": "node-gyp build --jobs=max",
     "install": "test -f build/Release/medooze-audio-codecs.node || (node-gyp configure && node-gyp rebuild --jobs=max)",
     "dist": "npm run configure && npm run build && npm run prepare && mkdir -p dist && tar cvzf dist/medooze-audio-codecs-`node -e 'console.log(require(\"./package.json\").version)'`.tgz `([ \"$(uname)\" = 'Darwin' ] && echo \"-s |^|medooze-audio-codecs/|\") || echo \" --transform=flags=r;s|^|medooze-audio-codecs/|\"` package.json index.js index.d.ts build/types  README.md lib/* build/Release/medooze-audio-codecs.node",
