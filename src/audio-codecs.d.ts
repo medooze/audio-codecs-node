@@ -162,8 +162,10 @@ export  class AudioCodecs {
  static EnableUltraDebug(flag: boolean): void;
 }
 
-export  class AudioDecoderFacade {
+export  class AudioDecoderFacadeShared {
 
+  constructor();
+  
   Start(): number;
 
   SetAACConfig(config: any): void;
@@ -172,11 +174,9 @@ export  class AudioDecoderFacade {
 
   RemoveAudioOutput(ouput: any): void;
 
-  SetIncoming(incomingSource: RTPIncomingMediaStreamShared): boolean;
+  toMediaFrameListener(): MediaFrameListenerShared;
 
   Stop(): number;
-
-  constructor();
 }
 
 export  class AudioInput {

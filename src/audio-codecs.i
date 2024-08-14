@@ -12,7 +12,6 @@
 %include "MediaFrame.i"
 %include "MediaFrameListenerBridge.i"
 %include "Properties.i"
-%include "RTPIncomingMediaStream.i"
 
 %include "AudioCodecs.i"
 %include "AudioDecoderFacade.i"
