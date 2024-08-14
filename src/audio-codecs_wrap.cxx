@@ -5498,6 +5498,9 @@ static void *_p_AudioPipeTo_p_AudioInput(void *x, int *SWIGUNUSEDPARM(newmemory)
 static void *_p_AudioPipeTo_p_AudioOutput(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((AudioOutput *)  ((AudioPipe *) x));
 }
+static void *_p_AudioDecoderFacadeTo_p_MediaFrameListener(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((MediaFrameListener *)  ((AudioDecoderFacade *) x));
+}
 static void *_p_MediaFrameListenerBridgeTo_p_MediaFrameListener(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((MediaFrameListener *)  ((MediaFrameListenerBridge *) x));
 }
@@ -5584,7 +5587,7 @@ static swig_cast_info _swigc__p_DWORD[] = {  {&_swigt__p_DWORD, 0, 0, 0},{0, 0, 
 static swig_cast_info _swigc__p_EventLoop[] = {  {&_swigt__p_EventLoop, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_FrameDispatchCoordinator[] = {  {&_swigt__p_FrameDispatchCoordinator, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_FrameDispatchCoordinatorShared[] = {  {&_swigt__p_FrameDispatchCoordinatorShared, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_MediaFrameListener[] = {  {&_swigt__p_MediaFrameListener, 0, 0, 0},  {&_swigt__p_MediaFrameListenerBridge, _p_MediaFrameListenerBridgeTo_p_MediaFrameListener, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_MediaFrameListener[] = {  {&_swigt__p_MediaFrameListener, 0, 0, 0},  {&_swigt__p_AudioDecoderFacade, _p_AudioDecoderFacadeTo_p_MediaFrameListener, 0, 0},  {&_swigt__p_MediaFrameListenerBridge, _p_MediaFrameListenerBridgeTo_p_MediaFrameListener, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MediaFrameListenerBridge[] = {  {&_swigt__p_MediaFrameListenerBridge, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MediaFrameListenerBridgeShared[] = {  {&_swigt__p_MediaFrameListenerBridgeShared, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MediaFrameListenerShared[] = {  {&_swigt__p_MediaFrameListenerShared, 0, 0, 0},{0, 0, 0, 0}};
@@ -6199,6 +6202,22 @@ if (SWIGTYPE_p_RTPIncomingMediaStream->clientdata && !(static_cast<SWIGV8_Client
 } else {
 #ifdef SWIGRUNTIME_DEBUG
   printf("Unable to inherit baseclass, it didn't exist _exports_MediaFrameListenerBridge _RTPIncomingMediaStream\n");
+#endif
+}
+if (SWIGTYPE_p_MediaFrameListener->clientdata && !(static_cast<SWIGV8_ClientData *>(SWIGTYPE_p_MediaFrameListener->clientdata)->class_templ.IsEmpty()))
+{
+  _exports_AudioDecoderFacade_class->Inherit(
+    v8::Local<v8::FunctionTemplate>::New(
+      v8::Isolate::GetCurrent(),
+      static_cast<SWIGV8_ClientData *>(SWIGTYPE_p_MediaFrameListener->clientdata)->class_templ)
+    );
+  
+#ifdef SWIGRUNTIME_DEBUG
+  printf("Inheritance successful _exports_AudioDecoderFacade _MediaFrameListener\n");
+#endif
+} else {
+#ifdef SWIGRUNTIME_DEBUG
+  printf("Unable to inherit baseclass, it didn't exist _exports_AudioDecoderFacade _MediaFrameListener\n");
 #endif
 }
 if (SWIGTYPE_p_AudioInput->clientdata && !(static_cast<SWIGV8_ClientData *>(SWIGTYPE_p_AudioInput->clientdata)->class_templ.IsEmpty()))

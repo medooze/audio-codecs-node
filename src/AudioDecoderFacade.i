@@ -27,7 +27,7 @@ public:
 };
 %}
 
-struct AudioDecoderFacade
+struct AudioDecoderFacade : public MediaFrameListener
 {
 	int Start();
 	void SetAACConfig(v8::Local<v8::Object> config);
