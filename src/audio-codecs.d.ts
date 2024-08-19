@@ -162,9 +162,7 @@ export  class AudioCodecs {
  static EnableUltraDebug(flag: boolean): void;
 }
 
-export  class AudioDecoderFacadeShared {
-
-  constructor();
+export class AudioDecoderFacade {
   
   Start(): number;
 
@@ -174,9 +172,16 @@ export  class AudioDecoderFacadeShared {
 
   RemoveAudioOutput(ouput: any): void;
 
+  Stop(): number;
+}
+
+export  class AudioDecoderFacadeShared {
+
+  constructor();
+
   toMediaFrameListener(): MediaFrameListenerShared;
 
-  Stop(): number;
+  get(): AudioDecoderFacade;
 }
 
 export  class AudioInput {
