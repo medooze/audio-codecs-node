@@ -1866,7 +1866,7 @@ public:
 
 
 
-#include "audiodecoder.h"
+#include "AudioDecoderWorker.h"
 
 class AudioDecoderFacade : public AudioDecoderWorker
 {
@@ -1921,7 +1921,7 @@ SWIGINTERN MediaFrameListenerShared AudioDecoderFacadeShared_toMediaFrameListene
 #include "audio.h"	
 
 
-#include "audioencoder.h"
+#include "AudioEncoderWorker.h"
 
 class AudioEncoderFacade : public AudioEncoderWorker
 {

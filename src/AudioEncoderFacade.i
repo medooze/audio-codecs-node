@@ -3,7 +3,7 @@
 %include "MediaFrame.i"
 
 %{
-#include "audioencoder.h"
+#include "AudioEncoderWorker.h"
 
 class AudioEncoderFacade : public AudioEncoderWorker
 {
