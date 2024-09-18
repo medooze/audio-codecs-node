@@ -1,5 +1,5 @@
 %{
-#include "audiodecoder.h"
+#include "AudioDecoderWorker.h"
 
 class AudioDecoderFacade : public AudioDecoderWorker
 {
