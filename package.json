@@ -27,6 +27,7 @@
     "lfsr": "0.0.3",
     "medooze-event-emitter": "^1.0.0",
     "nan": "^2.20.0",
+    "node-gyp": "^10.2.0",
     "uuid": "^3.3.2"
   },
   "peerDependencies": {

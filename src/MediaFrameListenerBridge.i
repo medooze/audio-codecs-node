@@ -15,7 +15,10 @@ struct MediaFrameListenerBridge :
 	public MediaFrameListener,
 	public MediaFrameProducer
 {
-	MediaFrameListenerBridge(TimeService& timeService, int ssrc);
+private:
+	MediaFrameListenerBridge();
+public:
+	//static shared_ptr<MediaFrameListenerBridge> Create(TimeService& timeService, int ssrc);
 
 	QWORD numFrames;
 	QWORD numPackets;
@@ -59,7 +62,7 @@ SHARED_PTR_BEGIN(MediaFrameListenerBridge)
 {
 	MediaFrameListenerBridgeShared(TimeService& timeService, int ssrc)
 	{
-		return new std::shared_ptr<MediaFrameListenerBridge>(new MediaFrameListenerBridge(timeService, ssrc));
+		return new std::shared_ptr<MediaFrameListenerBridge>(MediaFrameListenerBridge::Create(timeService, ssrc));
 	}
 	SHARED_PTR_TO(RTPIncomingMediaStream)
 	SHARED_PTR_TO(RTPReceiver)
