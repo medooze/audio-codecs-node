@@ -73,6 +73,7 @@
 							"<(medooze_media_server_src)/src/AudioPipe.cpp",
 							"<(medooze_media_server_src)/src/audiotransrater.cpp",
 							"<(medooze_media_server_src)/src/EventLoop.cpp",
+							"<(medooze_media_server_src)/src/SystemPoll.cpp",
 							"<(medooze_media_server_src)/src/log.cpp",
 							"<(medooze_media_server_src)/src/FrameDelayCalculator.cpp",
 							"<(medooze_media_server_src)/src/FrameDispatchCoordinator.cpp",
